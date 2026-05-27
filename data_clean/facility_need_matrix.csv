@@ -1,0 +1,134 @@
+FacilityType,Total_Count,Traveller_Need,Availability_Rate
+Airport,146,Accessible,0.7671232876712328
+Airport,146,Baby_Change,0.4246575342465753
+Airport,146,Parking,0.6643835616438356
+Airport,146,Shower,0.11643835616438356
+Airport,146,Dump_Point,0.00684931506849315
+Airport,146,Drinking_Water,0.2876712328767123
+Airport,146,TwentyFour_Hour,0.3424657534246575
+Beach,508,Accessible,0.5905511811023622
+Beach,508,Baby_Change,0.1594488188976378
+Beach,508,Parking,0.7066929133858267
+Beach,508,Shower,0.3779527559055118
+Beach,508,Dump_Point,0.01968503937007874
+Beach,508,Drinking_Water,0.1515748031496063
+Beach,508,TwentyFour_Hour,0.59251968503937
+Bus station,94,Accessible,0.7659574468085106
+Bus station,94,Baby_Change,0.43617021276595747
+Bus station,94,Parking,0.7127659574468085
+Bus station,94,Shower,0.0851063829787234
+Bus station,94,Dump_Point,0.031914893617021274
+Bus station,94,Drinking_Water,0.1595744680851064
+Bus station,94,TwentyFour_Hour,0.32978723404255317
+Camping ground,693,Accessible,0.35209235209235207
+Camping ground,693,Baby_Change,0.020202020202020204
+Camping ground,693,Parking,0.5757575757575758
+Camping ground,693,Shower,0.16161616161616163
+Camping ground,693,Dump_Point,0.10533910533910534
+Camping ground,693,Drinking_Water,0.13997113997113997
+Camping ground,693,TwentyFour_Hour,0.8831168831168831
+Car park,759,Accessible,0.7562582345191041
+Car park,759,Baby_Change,0.28063241106719367
+Car park,759,Parking,0.7812911725955204
+Car park,759,Shower,0.08563899868247694
+Car park,759,Dump_Point,0.03557312252964427
+Car park,759,Drinking_Water,0.09881422924901186
+Car park,759,TwentyFour_Hour,0.5019762845849802
+Caravan park,170,Accessible,0.3235294117647059
+Caravan park,170,Baby_Change,0.058823529411764705
+Caravan park,170,Parking,0.37058823529411766
+Caravan park,170,Shower,0.23529411764705882
+Caravan park,170,Dump_Point,0.6294117647058823
+Caravan park,170,Drinking_Water,0.12352941176470589
+Caravan park,170,TwentyFour_Hour,0.788235294117647
+Cemetery,180,Accessible,0.4888888888888889
+Cemetery,180,Baby_Change,0.06666666666666667
+Cemetery,180,Parking,0.6833333333333333
+Cemetery,180,Shower,0.005555555555555556
+Cemetery,180,Dump_Point,0.011111111111111112
+Cemetery,180,Drinking_Water,0.08888888888888889
+Cemetery,180,TwentyFour_Hour,0.46111111111111114
+Community building,1010,Accessible,0.7623762376237624
+Community building,1010,Baby_Change,0.38811881188118813
+Community building,1010,Parking,0.7376237623762376
+Community building,1010,Shower,0.06831683168316832
+Community building,1010,Dump_Point,0.01089108910891089
+Community building,1010,Drinking_Water,0.21683168316831683
+Community building,1010,TwentyFour_Hour,0.18217821782178217
+Food outlet,495,Accessible,0.8242424242424242
+Food outlet,495,Baby_Change,0.46464646464646464
+Food outlet,495,Parking,0.8444444444444444
+Food outlet,495,Shower,0.030303030303030304
+Food outlet,495,Dump_Point,0.00404040404040404
+Food outlet,495,Drinking_Water,0.11313131313131314
+Food outlet,495,TwentyFour_Hour,0.2545454545454545
+Jetty,90,Accessible,0.6333333333333333
+Jetty,90,Baby_Change,0.18888888888888888
+Jetty,90,Parking,0.6777777777777778
+Jetty,90,Shower,0.08888888888888889
+Jetty,90,Dump_Point,0.03333333333333333
+Jetty,90,Drinking_Water,0.06666666666666667
+Jetty,90,TwentyFour_Hour,0.5111111111111111
+Other,3560,Accessible,0.5075842696629214
+Other,3560,Baby_Change,0.1651685393258427
+Other,3560,Parking,0.4533707865168539
+Other,3560,Shower,0.060112359550561795
+Other,3560,Dump_Point,0.2103932584269663
+Other,3560,Drinking_Water,0.08567415730337079
+Other,3560,TwentyFour_Hour,0.5685393258426966
+Park or Reserve,32,Accessible,0.40625
+Park or Reserve,32,Baby_Change,0
+Park or Reserve,32,Parking,0.0625
+Park or Reserve,32,Shower,0.09375
+Park or Reserve,32,Dump_Point,0
+Park or Reserve,32,Drinking_Water,0.03125
+Park or Reserve,32,TwentyFour_Hour,0.96875
+Park or reserve,9895,Accessible,0.6320363820111167
+Park or reserve,9895,Baby_Change,0.19211723092470945
+Park or reserve,9895,Parking,0.653966649823143
+Park or reserve,9895,Shower,0.06548762001010612
+Park or reserve,9895,Dump_Point,0.02425467407781708
+Park or reserve,9895,Drinking_Water,0.15037897928246588
+Park or reserve,9895,TwentyFour_Hour,0.5007579585649318
+Rest area,632,Accessible,0.6075949367088608
+Rest area,632,Baby_Change,0.07753164556962025
+Rest area,632,Parking,0.875
+Rest area,632,Shower,0.0490506329113924
+Rest area,632,Dump_Point,0.1360759493670886
+Rest area,632,Drinking_Water,0.11075949367088607
+Rest area,632,TwentyFour_Hour,0.8939873417721519
+Service station,2459,Accessible,0.2712484749898333
+Service station,2459,Baby_Change,0.05124034160227735
+Service station,2459,Parking,0.7303782025213501
+Service station,2459,Shower,0.08540056933712892
+Service station,2459,Dump_Point,0.0056933712891419274
+Service station,2459,Drinking_Water,0.014640097600650671
+Service station,2459,TwentyFour_Hour,0.4583163887759252
+Shopping centre,1643,Accessible,0.8721850273889227
+Shopping centre,1643,Baby_Change,0.6043822276323798
+Shopping centre,1643,Parking,0.8800973828362751
+Shopping centre,1643,Shower,0.018867924528301886
+Shopping centre,1643,Dump_Point,0.0036518563603164943
+Shopping centre,1643,Drinking_Water,0.07486305538648813
+Shopping centre,1643,TwentyFour_Hour,0.04990870359099209
+Sporting facility,2105,Accessible,0.5586698337292162
+Sporting facility,2105,Baby_Change,0.15296912114014252
+Sporting facility,2105,Parking,0.638479809976247
+Sporting facility,2105,Shower,0.1311163895486936
+Sporting facility,2105,Dump_Point,0.018052256532066508
+Sporting facility,2105,Drinking_Water,0.18527315914489312
+Sporting facility,2105,TwentyFour_Hour,0.2356294536817102
+Swimming pool,82,Accessible,0.7682926829268293
+Swimming pool,82,Baby_Change,0.35365853658536583
+Swimming pool,82,Parking,0.7804878048780488
+Swimming pool,82,Shower,0.6951219512195121
+Swimming pool,82,Dump_Point,0
+Swimming pool,82,Drinking_Water,0.3048780487804878
+Swimming pool,82,TwentyFour_Hour,0.07317073170731707
+Train station,635,Accessible,0.7354330708661417
+Train station,635,Baby_Change,0.3102362204724409
+Train station,635,Parking,0.7417322834645669
+Train station,635,Shower,0.006299212598425197
+Train station,635,Dump_Point,0.0031496062992125984
+Train station,635,Drinking_Water,0.08818897637795275
+Train station,635,TwentyFour_Hour,0.13858267716535433

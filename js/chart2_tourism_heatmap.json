@@ -1,0 +1,187 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Interactive heatmap showing tourism pressure by state and quarter using domestic tourism metrics.",
+  "title": {
+    "text": "Tourism pressure changes by state and season",
+    "subtitle": "Darker cells indicate stronger domestic travel demand in that quarter.",
+    "anchor": "start",
+    "fontSize": 20,
+    "subtitleFontSize": 13
+  },
+  "width": 760,
+  "height": 330,
+  "data": {
+    "url": "data_clean/tourism_state_summary.csv"
+  },
+  "params": [
+    {
+      "name": "MetricChoice",
+      "value": "Total domestic trips",
+      "bind": {
+        "input": "select",
+        "options": [
+          "Total domestic trips",
+          "Visitor nights",
+          "Regional expenditure"
+        ],
+        "name": "Choose metric: "
+      }
+    }
+  ],
+  "transform": [
+    {
+      "filter": "datum.Metric == MetricChoice"
+    },
+    {
+      "filter": "datum.State != 'Australia'"
+    },
+    {
+      "calculate": "indexof(lower(datum.Quarter), 'march') >= 0 ? 1 : indexof(lower(datum.Quarter), 'june') >= 0 ? 2 : indexof(lower(datum.Quarter), 'september') >= 0 ? 3 : indexof(lower(datum.Quarter), 'december') >= 0 ? 4 : 99",
+      "as": "Quarter_Order"
+    },
+    {
+      "calculate": "datum.Quarter_Order == 1 ? 'Mar' : datum.Quarter_Order == 2 ? 'Jun' : datum.Quarter_Order == 3 ? 'Sep' : datum.Quarter_Order == 4 ? 'Dec' : datum.Quarter",
+      "as": "Quarter_Label"
+    },
+    {
+      "calculate": "datum.Metric == 'Regional expenditure' ? datum.Value / 1000 : datum.Value / 1000",
+      "as": "Display_Number"
+    },
+    {
+      "calculate": "datum.Metric == 'Regional expenditure' ? '$' + format(datum.Display_Number, '.1f') + 'B' : format(datum.Display_Number, '.1f') + 'M'",
+      "as": "Display_Value"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "sum",
+          "field": "Value",
+          "as": "State_Total"
+        }
+      ],
+      "groupby": [
+        "State"
+      ]
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "rect",
+        "cornerRadius": 3,
+        "stroke": "white",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "Quarter_Label",
+          "type": "ordinal",
+          "sort": [
+            "Mar",
+            "Jun",
+            "Sep",
+            "Dec"
+          ],
+          "title": "2025 quarter",
+          "axis": {
+            "labelAngle": 0,
+            "labelFontSize": 12,
+            "titleFontSize": 12
+          }
+        },
+        "y": {
+          "field": "State",
+          "type": "nominal",
+          "sort": {
+            "field": "State_Total",
+            "order": "descending"
+          },
+          "title": null,
+          "axis": {
+            "labelFontSize": 12
+          }
+        },
+        "color": {
+          "field": "Display_Number",
+          "type": "quantitative",
+          "title": "Selected metric",
+          "scale": {
+            "scheme": "oranges"
+          },
+          "legend": {
+            "orient": "right"
+          }
+        },
+        "tooltip": [
+          {
+            "field": "State",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "Quarter",
+            "type": "nominal",
+            "title": "Quarter"
+          },
+          {
+            "field": "Metric",
+            "type": "nominal",
+            "title": "Metric"
+          },
+          {
+            "field": "Display_Value",
+            "type": "nominal",
+            "title": "Value"
+          },
+          {
+            "field": "Unit",
+            "type": "nominal",
+            "title": "Original unit"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#3f3328"
+      },
+      "encoding": {
+        "x": {
+          "field": "Quarter_Label",
+          "type": "ordinal",
+          "sort": [
+            "Mar",
+            "Jun",
+            "Sep",
+            "Dec"
+          ]
+        },
+        "y": {
+          "field": "State",
+          "type": "nominal",
+          "sort": {
+            "field": "State_Total",
+            "order": "descending"
+          }
+        },
+        "text": {
+          "field": "Display_Value",
+          "type": "nominal"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Arial",
+    "axis": {
+      "domain": false,
+      "tickColor": "#cccccc"
+    }
+  }
+}

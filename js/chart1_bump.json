@@ -1,0 +1,208 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Bump chart showing how Australian states rank by total domestic trips across 2025 quarters.",
+  "title": {
+    "text": "Which states dominate domestic travel demand across 2025?",
+    "subtitle": "Ranking of total domestic trips by state across quarters; rank 1 means the highest demand.",
+    "anchor": "start",
+    "fontSize": 20,
+    "subtitleFontSize": 13
+  },
+  "width": 760,
+  "height": 420,
+  "data": {
+    "url": "data_clean/tourism_rank_long.csv"
+  },
+  "transform": [
+    {
+      "filter": "isValid(datum.Demand_Rank)"
+    },
+    {
+      "calculate": "datum.Quarter_Order == 1 ? 'Mar' : datum.Quarter_Order == 2 ? 'Jun' : datum.Quarter_Order == 3 ? 'Sep' : datum.Quarter_Order == 4 ? 'Dec' : datum.Quarter",
+      "as": "Quarter_Label"
+    },
+    {
+      "calculate": "format(datum.Trips_Million, '.1f') + 'M trips'",
+      "as": "Trips_Label"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "line",
+        "interpolate": "monotone",
+        "strokeWidth": 3,
+        "opacity": 0.8
+      },
+      "encoding": {
+        "x": {
+          "field": "Quarter_Label",
+          "type": "ordinal",
+          "sort": {
+            "field": "Quarter_Order",
+            "order": "ascending"
+          },
+          "title": "2025 quarter",
+          "axis": {
+            "labelFontSize": 12,
+            "titleFontSize": 12,
+            "labelAngle": 0
+          }
+        },
+        "y": {
+          "field": "Demand_Rank",
+          "type": "quantitative",
+          "title": "Demand rank",
+          "scale": {
+            "domain": [1, 8],
+            "reverse": true
+          },
+          "axis": {
+            "tickMinStep": 1,
+            "values": [1, 2, 3, 4, 5, 6, 7, 8],
+            "labelFontSize": 12,
+            "titleFontSize": 12
+          }
+        },
+        "color": {
+          "field": "State",
+          "type": "nominal",
+          "legend": null
+        },
+        "detail": {
+          "field": "State",
+          "type": "nominal"
+        },
+        "tooltip": [
+          {
+            "field": "State",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "Quarter",
+            "type": "nominal",
+            "title": "Quarter"
+          },
+          {
+            "field": "Demand_Rank",
+            "type": "quantitative",
+            "title": "Demand rank"
+          },
+          {
+            "field": "Trips_Million",
+            "type": "quantitative",
+            "title": "Domestic trips (M)",
+            "format": ".2f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 95,
+        "stroke": "white",
+        "strokeWidth": 1.2
+      },
+      "encoding": {
+        "x": {
+          "field": "Quarter_Label",
+          "type": "ordinal",
+          "sort": {
+            "field": "Quarter_Order",
+            "order": "ascending"
+          }
+        },
+        "y": {
+          "field": "Demand_Rank",
+          "type": "quantitative",
+          "scale": {
+            "domain": [1, 8],
+            "reverse": true
+          }
+        },
+        "color": {
+          "field": "State",
+          "type": "nominal",
+          "legend": null
+        },
+        "tooltip": [
+          {
+            "field": "State",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "Quarter",
+            "type": "nominal",
+            "title": "Quarter"
+          },
+          {
+            "field": "Demand_Rank",
+            "type": "quantitative",
+            "title": "Demand rank"
+          },
+          {
+            "field": "Trips_Label",
+            "type": "nominal",
+            "title": "Trips"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.Quarter_Order == 4"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 10,
+        "fontSize": 11,
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "x": {
+          "field": "Quarter_Label",
+          "type": "ordinal",
+          "sort": {
+            "field": "Quarter_Order",
+            "order": "ascending"
+          }
+        },
+        "y": {
+          "field": "Demand_Rank",
+          "type": "quantitative",
+          "scale": {
+            "domain": [1, 8],
+            "reverse": true
+          }
+        },
+        "text": {
+          "field": "State",
+          "type": "nominal"
+        },
+        "color": {
+          "field": "State",
+          "type": "nominal",
+          "legend": null
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Arial",
+    "axis": {
+      "domain": false,
+      "grid": true,
+      "tickColor": "#cccccc"
+    }
+  }
+}

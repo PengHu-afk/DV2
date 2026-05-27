@@ -1,0 +1,19 @@
+State,State_Full,Toilet_Count,Roadtrip_Readiness_Score,Rank_Gap,Rank_Type,Rank
+ACT,Australian Capital Territory,330,0.3116666666666667,1,Toilet quantity rank,7
+ACT,Australian Capital Territory,330,0.3116666666666667,1,Road-trip readiness rank,8
+NSW,New South Wales,7842,0.4620632491711298,4,Toilet quantity rank,1
+NSW,New South Wales,7842,0.4620632491711298,4,Road-trip readiness rank,5
+NT,Northern Territory,324,0.4313271604938272,-1,Toilet quantity rank,8
+NT,Northern Territory,324,0.4313271604938272,-1,Road-trip readiness rank,7
+QLD,Queensland,4688,0.46385452218430034,1,Toilet quantity rank,3
+QLD,Queensland,4688,0.46385452218430034,1,Road-trip readiness rank,4
+SA,South Australia,2139,0.4643758765778402,-2,Toilet quantity rank,5
+SA,South Australia,2139,0.4643758765778402,-2,Road-trip readiness rank,3
+TAS,Tasmania,988,0.4570850202429151,0,Toilet quantity rank,6
+TAS,Tasmania,988,0.4570850202429151,0,Road-trip readiness rank,6
+VIC,Victoria,6008,0.4672686418109187,0,Toilet quantity rank,2
+VIC,Victoria,6008,0.4672686418109187,0,Road-trip readiness rank,2
+WA,Western Australia,2870,0.470801393728223,-3,Toilet quantity rank,4
+WA,Western Australia,2870,0.470801393728223,-3,Road-trip readiness rank,1
+NA,NA,2,0.275,0,Toilet quantity rank,9
+NA,NA,2,0.275,0,Road-trip readiness rank,9

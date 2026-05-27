@@ -1,0 +1,118 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Small multiple maps showing public toilets that support different road-trip traveller needs.",
+  "title": {
+    "text": "Different road-trip needs create different toilet maps",
+    "subtitle": "Each panel shows toilets that support one specific traveller need.",
+    "anchor": "start",
+    "fontSize": 20,
+    "subtitleFontSize": 13
+  },
+  "data": {
+    "url": "data_clean/toilet_need_map_long.csv"
+  },
+  "transform": [
+    {
+      "filter": "isValid(datum.Longitude) && isValid(datum.Latitude)"
+    },
+    {
+      "filter": "datum.Longitude >= 112 && datum.Longitude <= 154 && datum.Latitude >= -44 && datum.Latitude <= -10"
+    }
+  ],
+  "facet": {
+    "field": "Traveller_Need",
+    "type": "nominal",
+    "columns": 2,
+    "sort": [
+      "24-hour access",
+      "Accessible access",
+      "Family support",
+      "Caravan support"
+    ],
+    "header": {
+      "title": null,
+      "labelFontSize": 14,
+      "labelFontWeight": "bold",
+      "labelColor": "#2b2118"
+    }
+  },
+  "spec": {
+    "width": 360,
+    "height": 260,
+    "projection": {
+      "type": "mercator"
+    },
+    "mark": {
+      "type": "circle",
+      "size": 9,
+      "opacity": 0.35
+    },
+    "encoding": {
+      "longitude": {
+        "field": "Longitude",
+        "type": "quantitative"
+      },
+      "latitude": {
+        "field": "Latitude",
+        "type": "quantitative"
+      },
+      "color": {
+        "field": "Traveller_Need",
+        "type": "nominal",
+        "legend": null,
+        "scale": {
+          "domain": [
+            "24-hour access",
+            "Accessible access",
+            "Family support",
+            "Caravan support"
+          ],
+          "range": [
+            "#6b4f3f",
+            "#4f6f7f",
+            "#b77945",
+            "#5f7f58"
+          ]
+        }
+      },
+      "tooltip": [
+        {
+          "field": "Name",
+          "type": "nominal",
+          "title": "Toilet name"
+        },
+        {
+          "field": "Town",
+          "type": "nominal",
+          "title": "Town"
+        },
+        {
+          "field": "State",
+          "type": "nominal",
+          "title": "State"
+        },
+        {
+          "field": "FacilityType",
+          "type": "nominal",
+          "title": "Facility type"
+        },
+        {
+          "field": "Traveller_Need",
+          "type": "nominal",
+          "title": "Traveller need"
+        }
+      ]
+    }
+  },
+  "resolve": {
+    "scale": {
+      "color": "independent"
+    }
+  },
+  "config": {
+    "view": {
+      "stroke": "#e1d7ca"
+    },
+    "font": "Arial"
+  }
+}

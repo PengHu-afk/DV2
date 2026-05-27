@@ -1,0 +1,160 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Opening KPI cards showing the scale of domestic travel demand in Australia using the latest December quarter data.",
+  "title": {
+    "text": "Australia's domestic travel creates constant demand for roadside facilities",
+    "subtitle": "Latest December quarter figures show why public toilets matter for road-trip travellers.",
+    "fontSize": 20,
+    "subtitleFontSize": 13,
+    "anchor": "start"
+  },
+  "data": {
+    "url": "data_clean/tourism_state_summary.csv"
+  },
+  "transform": [
+    {
+      "filter": "indexof(datum.Quarter, 'December') >= 0"
+    },
+    {
+      "aggregate": [
+        {
+          "op": "sum",
+          "field": "Value",
+          "as": "Total_Value"
+        }
+      ],
+      "groupby": [
+        "Metric",
+        "Unit"
+      ]
+    },
+    {
+      "calculate": "datum.Metric == 'Regional expenditure' ? '$' + format(datum.Total_Value / 1000, '.1f') + 'B' : format(datum.Total_Value / 1000, '.1f') + 'M'",
+      "as": "Display_Value"
+    },
+    {
+      "calculate": "datum.Metric == 'Total domestic trips' ? 'Domestic trips' : datum.Metric == 'Visitor nights' ? 'Visitor nights' : 'Regional expenditure'",
+      "as": "Display_Label"
+    },
+    {
+      "calculate": "datum.Metric == 'Total domestic trips' ? 'Trips taken within Australia' : datum.Metric == 'Visitor nights' ? 'Nights spent away from home' : 'Money spent in regional tourism'",
+      "as": "Display_Description"
+    }
+  ],
+  "facet": {
+    "field": "Metric",
+    "type": "nominal",
+    "columns": 3,
+    "sort": [
+      "Total domestic trips",
+      "Visitor nights",
+      "Regional expenditure"
+    ],
+    "header": {
+      "title": null,
+      "labelFontSize": 0,
+      "labelColor": "white"
+    }
+  },
+  "spec": {
+    "width": 250,
+    "height": 145,
+    "layer": [
+      {
+        "mark": {
+          "type": "rect",
+          "cornerRadius": 14,
+          "fill": "#f4efe8",
+          "stroke": "#d7c7b5",
+          "strokeWidth": 1
+        },
+        "encoding": {
+          "x": {
+            "value": 0
+          },
+          "x2": {
+            "value": 250
+          },
+          "y": {
+            "value": 0
+          },
+          "y2": {
+            "value": 145
+          }
+        }
+      },
+      {
+        "mark": {
+          "type": "text",
+          "align": "center",
+          "baseline": "middle",
+          "fontSize": 34,
+          "fontWeight": "bold",
+          "color": "#5b4636"
+        },
+        "encoding": {
+          "x": {
+            "value": 125
+          },
+          "y": {
+            "value": 48
+          },
+          "text": {
+            "field": "Display_Value",
+            "type": "nominal"
+          }
+        }
+      },
+      {
+        "mark": {
+          "type": "text",
+          "align": "center",
+          "baseline": "middle",
+          "fontSize": 15,
+          "fontWeight": "bold",
+          "color": "#2f2f2f"
+        },
+        "encoding": {
+          "x": {
+            "value": 125
+          },
+          "y": {
+            "value": 88
+          },
+          "text": {
+            "field": "Display_Label",
+            "type": "nominal"
+          }
+        }
+      },
+      {
+        "mark": {
+          "type": "text",
+          "align": "center",
+          "baseline": "middle",
+          "fontSize": 11,
+          "color": "#666666",
+          "limit": 220
+        },
+        "encoding": {
+          "x": {
+            "value": 125
+          },
+          "y": {
+            "value": 116
+          },
+          "text": {
+            "field": "Display_Description",
+            "type": "nominal"
+          }
+        }
+      }
+    ]
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Arial"
+  }
+}
