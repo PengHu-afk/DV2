@@ -123,6 +123,9 @@
       </p>
     </header>
 
+    <!-- =========================
+         chart 0 - opening snapshot
+         ========================= -->
 
     <section class="section intro-section">
   <div class="section-label">Opening snapshot</div>
@@ -172,6 +175,9 @@
       </div>
     </section>
 
+    <!-- =========================
+         CHART 2
+         ========================= -->
 <section class="section">
   <div class="section-label">Seasonal pressure</div>
 
@@ -194,6 +200,9 @@
   </div>
 </section>
 
+    <!-- =========================
+         chart 3
+         ========================= -->
 <section class="section">
   <div class="section-label">Spatial access</div>
 
@@ -217,6 +226,9 @@
   </div>
 </section>
 
+    <!-- =========================
+         chart 4
+         ========================= -->
 <section class="section">
   <div class="section-label">Traveller needs</div>
 
@@ -241,7 +253,9 @@
 </section>
 
 
-
+    <!-- =========================
+         chart 5
+         ========================= -->
 <section class="section">
   <div class="section-label">Demand and supply</div>
 
@@ -266,9 +280,31 @@
 </section>
 
     <!-- =========================
-         Future sections
-         You can add Chart 2 to Chart 10 here later.
+         chart 6
          ========================= -->
+<section class="section">
+  <div class="section-label">Quantity versus quality</div>
+
+  <h2>6. Does having more toilets mean being more road-trip ready?</h2>
+
+  <p>
+    Toilet quantity and toilet usefulness are not the same thing. This dumbbell chart
+    compares each state's rank for total public toilet count with its rank for road-trip
+    readiness. A large gap suggests that a state may have many toilets but weaker
+    traveller-support features, or fewer toilets but stronger quality.
+  </p>
+
+  <div class="chart-card">
+    <div id="chart6"></div>
+
+    <p class="chart-note">
+      Reading guide: each row is one state. Brown points show toilet quantity rank, while
+      blue points show road-trip readiness rank. Rank 1 means highest. The number on the
+      right shows the rank gap; positive values mean the readiness rank is worse than the
+      quantity rank.
+    </p>
+  </div>
+</section>
 
     <footer>
       <strong>Author:</strong> Peng Hu<br>
@@ -301,6 +337,10 @@
   }).catch(console.error);
 
   vegaEmbed("#chart5", "js/chart5_demand_supply_quadrant.json", {
+    actions: false
+  }).catch(console.error);
+
+  vegaEmbed("#chart6", "js/chart6_rank_dumbbell.json", {
     actions: false
   }).catch(console.error);
 </script>

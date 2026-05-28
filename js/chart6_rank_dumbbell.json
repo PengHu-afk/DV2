@@ -1,0 +1,246 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Dumbbell chart comparing toilet quantity rank and road-trip readiness rank by Australian state.",
+  "title": {
+    "text": "More toilets does not always mean better road-trip readiness",
+    "subtitle": "Each line compares a state's toilet quantity rank with its road-trip readiness rank; rank 1 means highest.",
+    "anchor": "start",
+    "fontSize": 20,
+    "subtitleFontSize": 13
+  },
+  "width": 760,
+  "height": 370,
+  "data": {
+    "url": "data_clean/state_rank_gap.csv"
+  },
+  "transform": [
+    {
+      "filter": "isValid(datum.Rank)"
+    },
+    {
+      "calculate": "datum.Roadtrip_Readiness_Score * 100",
+      "as": "Readiness_Percent"
+    },
+    {
+      "calculate": "datum.Rank_Gap > 0 ? '+' + datum.Rank_Gap : datum.Rank_Gap",
+      "as": "Rank_Gap_Label"
+    },
+    {
+      "calculate": "datum.Rank_Gap > 0 ? 'Readiness rank is worse than quantity rank' : datum.Rank_Gap < 0 ? 'Readiness rank is better than quantity rank' : 'Quantity and readiness ranks match'",
+      "as": "Gap_Interpretation"
+    }
+  ],
+  "layer": [
+    {
+      "transform": [
+        {
+          "aggregate": [
+            {
+              "op": "min",
+              "field": "Rank",
+              "as": "Rank_Min"
+            },
+            {
+              "op": "max",
+              "field": "Rank",
+              "as": "Rank_Max"
+            },
+            {
+              "op": "mean",
+              "field": "Rank_Gap",
+              "as": "Rank_Gap_Mean"
+            }
+          ],
+          "groupby": [
+            "State",
+            "State_Full"
+          ]
+        }
+      ],
+      "mark": {
+        "type": "rule",
+        "strokeWidth": 3,
+        "opacity": 0.55,
+        "color": "#b8afa5"
+      },
+      "encoding": {
+        "y": {
+          "field": "State",
+          "type": "nominal",
+          "title": null,
+          "sort": {
+            "field": "Rank_Gap_Mean",
+            "order": "descending"
+          },
+          "axis": {
+            "labelFontSize": 12
+          }
+        },
+        "x": {
+          "field": "Rank_Min",
+          "type": "quantitative",
+          "title": "Rank (1 = highest)",
+          "scale": {
+            "domain": [1, 8.8]
+          },
+          "axis": {
+            "values": [1, 2, 3, 4, 5, 6, 7, 8],
+            "tickMinStep": 1,
+            "labelFontSize": 11,
+            "titleFontSize": 12,
+            "grid": true
+          }
+        },
+        "x2": {
+          "field": "Rank_Max"
+        },
+        "tooltip": [
+          {
+            "field": "State_Full",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "Rank_Gap_Mean",
+            "type": "quantitative",
+            "title": "Rank gap"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 145,
+        "stroke": "white",
+        "strokeWidth": 1.5,
+        "opacity": 0.95
+      },
+      "encoding": {
+        "y": {
+          "field": "State",
+          "type": "nominal",
+          "title": null,
+          "sort": {
+            "field": "Rank_Gap",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "Rank",
+          "type": "quantitative",
+          "scale": {
+            "domain": [1, 8.8]
+          }
+        },
+        "color": {
+          "field": "Rank_Type",
+          "type": "nominal",
+          "title": "Ranking type",
+          "scale": {
+            "domain": [
+              "Toilet quantity rank",
+              "Road-trip readiness rank"
+            ],
+            "range": [
+              "#8b5e3c",
+              "#4f6f7f"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "direction": "horizontal"
+          }
+        },
+        "tooltip": [
+          {
+            "field": "State_Full",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "Rank_Type",
+            "type": "nominal",
+            "title": "Rank type"
+          },
+          {
+            "field": "Rank",
+            "type": "quantitative",
+            "title": "Rank"
+          },
+          {
+            "field": "Toilet_Count",
+            "type": "quantitative",
+            "title": "Number of toilets",
+            "format": ","
+          },
+          {
+            "field": "Readiness_Percent",
+            "type": "quantitative",
+            "title": "Readiness score (%)",
+            "format": ".1f"
+          },
+          {
+            "field": "Gap_Interpretation",
+            "type": "nominal",
+            "title": "Interpretation"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.Rank_Type == 'Road-trip readiness rank'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 8,
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#5d5148"
+      },
+      "encoding": {
+        "y": {
+          "field": "State",
+          "type": "nominal",
+          "sort": {
+            "field": "Rank_Gap",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "value": 720
+        },
+        "text": {
+          "field": "Rank_Gap_Label",
+          "type": "nominal"
+        },
+        "tooltip": [
+          {
+            "field": "Gap_Interpretation",
+            "type": "nominal",
+            "title": "Rank gap meaning"
+          }
+        ]
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Arial",
+    "axis": {
+      "domain": false,
+      "tickColor": "#cccccc"
+    },
+    "legend": {
+      "labelFontSize": 11,
+      "titleFontSize": 12
+    }
+  }
+}
