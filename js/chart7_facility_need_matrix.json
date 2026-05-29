@@ -1,0 +1,369 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Compound heatmap showing how different public toilet facility types support road-trip traveller needs, with marginal bars for average availability and total facility count.",
+  "title": {
+    "text": "Which facility types actually support road-trip needs?",
+    "subtitle": "Heatmap cells show the share of toilets in each facility type that provide each traveller-support feature.",
+    "anchor": "start",
+    "fontSize": 20,
+    "subtitleFontSize": 13
+  },
+  "data": {
+    "url": "data_clean/facility_need_matrix.csv"
+  },
+  "vconcat": [
+    {
+      "width": 610,
+      "height": 85,
+      "transform": [
+        {
+          "aggregate": [
+            {
+              "op": "mean",
+              "field": "Availability_Rate",
+              "as": "Average_Availability"
+            }
+          ],
+          "groupby": [
+            "Traveller_Need"
+          ]
+        },
+        {
+          "calculate": "format(datum.Average_Availability, '.0%')",
+          "as": "Average_Label"
+        }
+      ],
+      "layer": [
+        {
+          "mark": {
+            "type": "bar",
+            "cornerRadiusEnd": 3,
+            "color": "#b77945"
+          },
+          "encoding": {
+            "x": {
+              "field": "Traveller_Need",
+              "type": "nominal",
+              "sort": [
+                "Accessible",
+                "Baby_Change",
+                "Parking",
+                "Shower",
+                "Dump_Point",
+                "Drinking_Water",
+                "TwentyFour_Hour"
+              ],
+              "title": null,
+              "axis": {
+                "labelAngle": -25,
+                "labelFontSize": 10
+              }
+            },
+            "y": {
+              "field": "Average_Availability",
+              "type": "quantitative",
+              "title": "Average availability",
+              "axis": {
+                "format": "%",
+                "labelFontSize": 10,
+                "titleFontSize": 11
+              }
+            },
+            "tooltip": [
+              {
+                "field": "Traveller_Need",
+                "type": "nominal",
+                "title": "Traveller need"
+              },
+              {
+                "field": "Average_Availability",
+                "type": "quantitative",
+                "title": "Average availability",
+                "format": ".1%"
+              }
+            ]
+          }
+        },
+        {
+          "mark": {
+            "type": "text",
+            "dy": -6,
+            "fontSize": 10,
+            "fontWeight": "bold",
+            "color": "#4a3a2d"
+          },
+          "encoding": {
+            "x": {
+              "field": "Traveller_Need",
+              "type": "nominal",
+              "sort": [
+                "Accessible",
+                "Baby_Change",
+                "Parking",
+                "Shower",
+                "Dump_Point",
+                "Drinking_Water",
+                "TwentyFour_Hour"
+              ]
+            },
+            "y": {
+              "field": "Average_Availability",
+              "type": "quantitative"
+            },
+            "text": {
+              "field": "Average_Label",
+              "type": "nominal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "hconcat": [
+        {
+          "width": 610,
+          "height": 420,
+          "transform": [
+            {
+              "calculate": "format(datum.Availability_Rate, '.0%')",
+              "as": "Availability_Label"
+            }
+          ],
+          "layer": [
+            {
+              "mark": {
+                "type": "rect",
+                "stroke": "white",
+                "strokeWidth": 1
+              },
+              "encoding": {
+                "x": {
+                  "field": "Traveller_Need",
+                  "type": "nominal",
+                  "sort": [
+                    "Accessible",
+                    "Baby_Change",
+                    "Parking",
+                    "Shower",
+                    "Dump_Point",
+                    "Drinking_Water",
+                    "TwentyFour_Hour"
+                  ],
+                  "title": "Traveller need",
+                  "axis": {
+                    "labelAngle": -25,
+                    "labelFontSize": 10,
+                    "titleFontSize": 12
+                  }
+                },
+                "y": {
+                  "field": "FacilityType",
+                  "type": "nominal",
+                  "sort": {
+                    "op": "max",
+                    "field": "Total_Count",
+                    "order": "descending"
+                  },
+                  "title": "Facility type",
+                  "axis": {
+                    "labelFontSize": 10,
+                    "titleFontSize": 12
+                  }
+                },
+                "color": {
+                  "field": "Availability_Rate",
+                  "type": "quantitative",
+                  "title": "Availability rate",
+                  "scale": {
+                    "scheme": "oranges",
+                    "domain": [0, 1]
+                  },
+                  "legend": {
+                    "orient": "right",
+                    "format": "%"
+                  }
+                },
+                "tooltip": [
+                  {
+                    "field": "FacilityType",
+                    "type": "nominal",
+                    "title": "Facility type"
+                  },
+                  {
+                    "field": "Traveller_Need",
+                    "type": "nominal",
+                    "title": "Traveller need"
+                  },
+                  {
+                    "field": "Availability_Rate",
+                    "type": "quantitative",
+                    "title": "Availability rate",
+                    "format": ".1%"
+                  },
+                  {
+                    "field": "Total_Count",
+                    "type": "quantitative",
+                    "title": "Number of toilets in this type",
+                    "format": ","
+                  }
+                ]
+              }
+            },
+            {
+              "mark": {
+                "type": "text",
+                "fontSize": 9,
+                "fontWeight": "bold",
+                "color": "#3f3328"
+              },
+              "encoding": {
+                "x": {
+                  "field": "Traveller_Need",
+                  "type": "nominal",
+                  "sort": [
+                    "Accessible",
+                    "Baby_Change",
+                    "Parking",
+                    "Shower",
+                    "Dump_Point",
+                    "Drinking_Water",
+                    "TwentyFour_Hour"
+                  ]
+                },
+                "y": {
+                  "field": "FacilityType",
+                  "type": "nominal",
+                  "sort": {
+                    "op": "max",
+                    "field": "Total_Count",
+                    "order": "descending"
+                  }
+                },
+                "text": {
+                  "field": "Availability_Label",
+                  "type": "nominal"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "width": 145,
+          "height": 420,
+          "transform": [
+            {
+              "aggregate": [
+                {
+                  "op": "max",
+                  "field": "Total_Count",
+                  "as": "Facility_Count"
+                }
+              ],
+              "groupby": [
+                "FacilityType"
+              ]
+            }
+          ],
+          "layer": [
+            {
+              "mark": {
+                "type": "bar",
+                "cornerRadiusEnd": 3,
+                "color": "#6b4f3f"
+              },
+              "encoding": {
+                "y": {
+                  "field": "FacilityType",
+                  "type": "nominal",
+                  "sort": {
+                    "op": "max",
+                    "field": "Facility_Count",
+                    "order": "descending"
+                  },
+                  "title": null,
+                  "axis": {
+                    "labels": false,
+                    "ticks": false,
+                    "domain": false
+                  }
+                },
+                "x": {
+                  "field": "Facility_Count",
+                  "type": "quantitative",
+                  "title": "Total count",
+                  "axis": {
+                    "labelFontSize": 10,
+                    "titleFontSize": 11,
+                    "grid": true
+                  }
+                },
+                "tooltip": [
+                  {
+                    "field": "FacilityType",
+                    "type": "nominal",
+                    "title": "Facility type"
+                  },
+                  {
+                    "field": "Facility_Count",
+                    "type": "quantitative",
+                    "title": "Number of toilets",
+                    "format": ","
+                  }
+                ]
+              }
+            },
+            {
+              "mark": {
+                "type": "text",
+                "align": "left",
+                "baseline": "middle",
+                "dx": 4,
+                "fontSize": 9,
+                "color": "#4a3a2d"
+              },
+              "encoding": {
+                "y": {
+                  "field": "FacilityType",
+                  "type": "nominal",
+                  "sort": {
+                    "op": "max",
+                    "field": "Facility_Count",
+                    "order": "descending"
+                  }
+                },
+                "x": {
+                  "field": "Facility_Count",
+                  "type": "quantitative"
+                },
+                "text": {
+                  "field": "Facility_Count",
+                  "type": "quantitative",
+                  "format": ","
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "resolve": {
+    "scale": {
+      "color": "independent"
+    }
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Arial",
+    "axis": {
+      "domain": false,
+      "tickColor": "#cccccc"
+    },
+    "legend": {
+      "labelFontSize": 11,
+      "titleFontSize": 12
+    }
+  }
+}

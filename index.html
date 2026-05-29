@@ -306,6 +306,33 @@
   </div>
 </section>
 
+    <!-- =========================
+         chart 7
+         ========================= -->
+<section class="section">
+  <div class="section-label">Facility usefulness</div>
+
+  <h2>7. Which facility types actually support road-trip needs?</h2>
+
+  <p>
+    Not all public toilets provide the same level of support for road-trip travellers.
+    This compound matrix compares facility types against common traveller needs such as
+    accessibility, parking, showers, drinking water and 24-hour access. The side bars also
+    show how common each facility type is, so the chart compares both usefulness and scale.
+  </p>
+
+  <div class="chart-card">
+    <div id="chart7"></div>
+
+    <p class="chart-note">
+      Reading guide: darker heatmap cells mean a higher share of toilets in that facility
+      type provide the selected feature. The top bars summarise average availability by
+      traveller need, while the right-side bars show how many toilets belong to each facility
+      type.
+    </p>
+  </div>
+</section>
+
     <footer>
       <strong>Author:</strong> Peng Hu<br>
       <strong>Project:</strong> FIT2179 Data Visualisation 2<br>
@@ -341,6 +368,10 @@
   }).catch(console.error);
 
   vegaEmbed("#chart6", "js/chart6_rank_dumbbell.json", {
+    actions: false
+  }).catch(console.error);
+
+  vegaEmbed("#chart7", "js/chart7_facility_need_matrix.json", {
     actions: false
   }).catch(console.error);
 </script>
