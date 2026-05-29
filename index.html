@@ -333,6 +333,33 @@
   </div>
 </section>
 
+
+    <!-- =========================
+         chart 8
+         ========================= -->
+<section class="section">
+  <div class="section-label">Traveller personas</div>
+
+  <h2>8. Does the toilet network work equally well for different travellers?</h2>
+
+  <p>
+    A public toilet network can look strong overall, but still feel weak for specific
+    travellers. This glyph matrix compares support for night drivers, families,
+    accessible travellers and caravan travellers across states. The goal is to shift the
+    analysis from simple toilet counts to real user needs.
+  </p>
+
+  <div class="chart-card">
+    <div id="chart8"></div>
+
+    <p class="chart-note">
+      Reading guide: larger and darker circles show stronger support for that traveller
+      persona in that state. The top bars summarise average support by state, while the
+      right-side bars show which traveller personas are generally better or worse supported.
+    </p>
+  </div>
+</section>
+
     <footer>
       <strong>Author:</strong> Peng Hu<br>
       <strong>Project:</strong> FIT2179 Data Visualisation 2<br>
@@ -372,6 +399,10 @@
   }).catch(console.error);
 
   vegaEmbed("#chart7", "js/chart7_facility_need_matrix.json", {
+    actions: false
+  }).catch(console.error);
+
+  vegaEmbed("#chart8", "js/chart8_persona_glyph_matrix.json", {
     actions: false
   }).catch(console.error);
 </script>
