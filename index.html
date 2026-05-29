@@ -360,6 +360,33 @@
   </div>
 </section>
 
+    <!-- =========================
+         chart 9
+         ========================= -->
+<section class="section">
+  <div class="section-label">Readiness score</div>
+
+  <h2>9. What makes a state road-trip ready?</h2>
+
+  <p>
+    The road-trip readiness score is a custom index created for this visualisation.
+    It combines five traveller-support features: accessible toilets, 24-hour access,
+    parking, baby-change facilities and showers. This component chart shows both the
+    total score and how each feature contributes to it.
+  </p>
+
+  <div class="chart-card">
+    <div id="chart9"></div>
+
+    <p class="chart-note">
+      Reading guide: each stacked bar shows the weighted contribution of each feature to
+      the final readiness score. The black dot marks the total score. This score is not an
+      official rating; it is a simple index designed to compare road-trip toilet support
+      across states.
+    </p>
+  </div>
+</section>
+
     <footer>
       <strong>Author:</strong> Peng Hu<br>
       <strong>Project:</strong> FIT2179 Data Visualisation 2<br>
@@ -403,6 +430,10 @@
   }).catch(console.error);
 
   vegaEmbed("#chart8", "js/chart8_persona_glyph_matrix.json", {
+    actions: false
+  }).catch(console.error);
+
+  vegaEmbed("#chart9", "js/chart9_readiness_components.json", {
     actions: false
   }).catch(console.error);
 </script>

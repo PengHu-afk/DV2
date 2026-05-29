@@ -1,0 +1,278 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Stacked component chart showing how the road-trip readiness score is built from accessibility, 24-hour access, parking, baby change and shower availability.",
+  "title": {
+    "text": "What makes a state road-trip ready?",
+    "subtitle": "The score combines accessible toilets, 24-hour access, parking, baby-change facilities and showers.",
+    "anchor": "start",
+    "fontSize": 20,
+    "subtitleFontSize": 13
+  },
+  "width": 760,
+  "height": 390,
+  "data": {
+    "url": "data_clean/readiness_components_long.csv"
+  },
+  "transform": [
+    {
+      "calculate": "datum.Weighted_Value * 100",
+      "as": "Weighted_Percent"
+    },
+    {
+      "calculate": "datum.Roadtrip_Readiness_Score * 100",
+      "as": "Score_Percent"
+    },
+    {
+      "calculate": "datum.Rate * 100",
+      "as": "Rate_Percent"
+    },
+    {
+      "calculate": "format(datum.Weighted_Percent, '.1f') + ' pts'",
+      "as": "Weighted_Label"
+    },
+    {
+      "calculate": "format(datum.Score_Percent, '.1f') + '%'",
+      "as": "Score_Label"
+    },
+    {
+      "calculate": "format(datum.Rate_Percent, '.1f') + '%'",
+      "as": "Rate_Label"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "max",
+          "field": "Score_Percent",
+          "as": "State_Score"
+        }
+      ],
+      "groupby": [
+        "State"
+      ]
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "cornerRadiusEnd": 2
+      },
+      "encoding": {
+        "y": {
+          "field": "State",
+          "type": "nominal",
+          "title": null,
+          "sort": {
+            "field": "State_Score",
+            "order": "descending"
+          },
+          "axis": {
+            "labelFontSize": 12
+          }
+        },
+        "x": {
+          "field": "Weighted_Percent",
+          "type": "quantitative",
+          "title": "Contribution to readiness score (percentage points)",
+          "stack": "zero",
+          "axis": {
+            "labelFontSize": 11,
+            "titleFontSize": 12,
+            "grid": true
+          }
+        },
+        "color": {
+          "field": "Component",
+          "type": "nominal",
+          "title": "Score component",
+          "sort": {
+            "field": "Component_Order",
+            "order": "ascending"
+          },
+          "scale": {
+            "domain": [
+              "Accessible",
+              "24-hour",
+              "Parking",
+              "Baby change",
+              "Shower"
+            ],
+            "range": [
+              "#4f6f7f",
+              "#8b5e3c",
+              "#b77945",
+              "#d9a65f",
+              "#5f7f58"
+            ]
+          },
+          "legend": {
+            "orient": "top",
+            "direction": "horizontal"
+          }
+        },
+        "order": {
+          "field": "Component_Order",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {
+            "field": "State_Full",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "Component",
+            "type": "nominal",
+            "title": "Component"
+          },
+          {
+            "field": "Rate_Label",
+            "type": "nominal",
+            "title": "Original facility rate"
+          },
+          {
+            "field": "Weight",
+            "type": "quantitative",
+            "title": "Index weight",
+            "format": ".0%"
+          },
+          {
+            "field": "Weighted_Label",
+            "type": "nominal",
+            "title": "Weighted contribution"
+          },
+          {
+            "field": "Score_Label",
+            "type": "nominal",
+            "title": "Total readiness score"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "aggregate": [
+            {
+              "op": "max",
+              "field": "Score_Percent",
+              "as": "Total_Score"
+            },
+            {
+              "op": "max",
+              "field": "State_Score",
+              "as": "State_Score"
+            }
+          ],
+          "groupby": [
+            "State"
+          ]
+        },
+        {
+          "calculate": "format(datum.Total_Score, '.1f') + '%'",
+          "as": "Total_Score_Label"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "size": 120,
+        "color": "#2b2118",
+        "stroke": "white",
+        "strokeWidth": 1.2
+      },
+      "encoding": {
+        "y": {
+          "field": "State",
+          "type": "nominal",
+          "sort": {
+            "field": "State_Score",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "Total_Score",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {
+            "field": "State",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "Total_Score",
+            "type": "quantitative",
+            "title": "Total readiness score",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "aggregate": [
+            {
+              "op": "max",
+              "field": "Score_Percent",
+              "as": "Total_Score"
+            },
+            {
+              "op": "max",
+              "field": "State_Score",
+              "as": "State_Score"
+            }
+          ],
+          "groupby": [
+            "State"
+          ]
+        },
+        {
+          "calculate": "format(datum.Total_Score, '.1f') + '%'",
+          "as": "Total_Score_Label"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 8,
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#2b2118"
+      },
+      "encoding": {
+        "y": {
+          "field": "State",
+          "type": "nominal",
+          "sort": {
+            "field": "State_Score",
+            "order": "descending"
+          }
+        },
+        "x": {
+          "field": "Total_Score",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "Total_Score_Label",
+          "type": "nominal"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Arial",
+    "axis": {
+      "domain": false,
+      "tickColor": "#cccccc"
+    },
+    "legend": {
+      "labelFontSize": 11,
+      "titleFontSize": 12
+    }
+  }
+}
