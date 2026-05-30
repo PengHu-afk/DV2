@@ -14,6 +14,11 @@
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
 
   <style>
+    * {
+  box-sizing: border-box;
+}
+
+html,
     body {
   margin: 0;
   font-family: 'Inter', Arial, Helvetica, sans-serif;
@@ -21,8 +26,13 @@
   color: #1f2a33;
 }
 
+:root {
+  --content-max: 1360px;
+  --side-margin: 56px;
+}
+
 .page {
-  width: min(1440px, calc(100% - 64px));
+  width: min(var(--content-max), calc(100% - var(--side-margin) * 2));
   margin: 0 auto;
 }
 
@@ -38,7 +48,7 @@
 }
 
 .hero-inner {
-  width: min(1440px, calc(100% - 64px));
+  width: min(var(--content-max), calc(100% - var(--side-margin) * 2));
   margin: 0 auto;
 }
 
@@ -116,10 +126,39 @@
 
 .grid-12 {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: repeat(12, minmax(0, 1fr));
   column-gap: 28px;
   row-gap: 24px;
   align-items: start;
+}
+
+.grid-12 > *,
+.module1-layout > *,
+.viz,
+.vega-embed {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.vega-embed svg,
+.vega-embed canvas {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+}
+
+#chart1,
+#chart2,
+#chart3,
+#chart4,
+#chart5,
+#chart6,
+#chart7,
+#chart8,
+#chart9,
+#chart10 {
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .col-4 {
@@ -300,10 +339,10 @@
 }
 
 .hero-kpi-inner {
-  width: min(1440px, calc(100% - 64px));
+  width: min(var(--content-max), calc(100% - var(--side-margin) * 2));
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 28px;
   padding: 28px 0 22px 0;
 }
@@ -328,10 +367,15 @@
   color: #53636d;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
+  :root {
+    --side-margin: 22px;
+  }
+
+  .page,
+  .hero-inner,
   .hero-kpi-inner {
-    grid-template-columns: 1fr;
-    width: min(100% - 36px, 1440px);
+    width: min(100% - 44px, var(--content-max));
   }
 }
 
@@ -437,7 +481,7 @@ footer {
    ========================= */
   .module1-layout {
   display: grid;
-  grid-template-columns: 35% 65%;
+  grid-template-columns: minmax(0, 35fr) minmax(0, 65fr);
   column-gap: 34px;
   row-gap: 26px;
   align-items: start;
