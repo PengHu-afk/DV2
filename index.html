@@ -387,6 +387,32 @@
   </div>
 </section>
 
+    <!-- =========================
+         chart 10
+         ========================= -->
+<section class="section">
+  <div class="section-label">Action priority</div>
+
+  <h2>10. Where should public toilet improvements be prioritised?</h2>
+
+  <p>
+    The final decision matrix combines tourism pressure and road-trip toilet readiness.
+    States on the right have more domestic trips per toilet, while states lower on the chart
+    have weaker readiness scores. The priority is not simply to add more toilets everywhere,
+    but to identify where high travel pressure meets weaker traveller-support facilities.
+  </p>
+
+  <div class="chart-card">
+    <div id="chart10"></div>
+
+    <p class="chart-note">
+      Reading guide: the dashed lines show median values. The lower-right quadrant is the
+      most important priority area because it combines higher travel pressure with weaker
+      road-trip readiness. Bubble size shows the size of the public toilet network.
+    </p>
+  </div>
+</section>
+
     <footer>
       <strong>Author:</strong> Peng Hu<br>
       <strong>Project:</strong> FIT2179 Data Visualisation 2<br>
@@ -434,6 +460,10 @@
   }).catch(console.error);
 
   vegaEmbed("#chart9", "js/chart9_readiness_components.json", {
+    actions: false
+  }).catch(console.error);
+
+  vegaEmbed("#chart10", "js/chart10_action_priority_matrix.json", {
     actions: false
   }).catch(console.error);
 </script>
