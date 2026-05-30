@@ -8,7 +8,7 @@
     "fontSize": 20,
     "subtitleFontSize": 13
   },
-  "width": 760,
+  "width": 680,
   "height": 330,
   "data": {
     "url": "data_clean/tourism_state_summary.csv"

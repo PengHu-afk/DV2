@@ -82,7 +82,17 @@
       border-radius: 14px;
       padding: 26px;
       box-shadow: 0 4px 14px rgba(60, 45, 30, 0.08);
-      overflow-x: auto;
+      overflow-x: hidden;
+    }
+
+    .vega-embed {
+      max-width: 100%;
+    }
+
+    .vega-embed svg,
+    .vega-embed canvas {
+      max-width: 100%;
+      height: auto;
     }
 
     .chart-note {
@@ -147,6 +157,11 @@
       tourism scale. They introduce why public toilet access matters before the project
       moves into maps, rankings and pressure analysis.
     </p>
+
+    <p class="chart-note">
+  These figures show the scale of domestic travel before the project asks a more practical
+  question: are public toilets available where travellers need them?
+    </p>
   </div>
 </section>
 
@@ -208,20 +223,21 @@
   <h2>3. Where are public toilets concentrated across Australia?</h2>
 
   <p>
-    Public toilet access is spatial. Instead of showing every toilet as a separate point,
-    this bin map groups toilets into small longitude-latitude cells. Darker cells indicate
-    places where more public toilets are concentrated. This makes dense city clusters and
-    sparse regional areas easier to compare.
+  Public toilet access is spatial, but raw toilet counts can overemphasise cities.
+  This bin map adjusts toilet supply by domestic travel demand, showing toilets per
+  million domestic trips. Darker cells indicate lower relative supply, helping highlight
+  places where facilities may be thinner relative to demand.
   </p>
 
   <div class="chart-card">
     <div id="chart3"></div>
 
-    <p class="chart-note">
-      Reading guide: each square represents a geographic grid cell. Darker squares contain
-      more public toilets. This is a density-style map, so it focuses on spatial coverage
-      rather than individual toilet locations.
-    </p>
+  <p class="chart-note">
+  Reading guide: each square represents a geographic grid cell. Darker squares indicate
+  lower relative toilet supply per million domestic trips, highlighting areas where
+  facilities may be thinner relative to demand. Blank cells indicate areas with no recorded
+  public toilets in the dataset or outside the selected grid coverage.
+  </p>
   </div>
 </section>
 
@@ -244,9 +260,9 @@
     <div id="chart4"></div>
 
     <p class="chart-note">
-      Reading guide: each panel shows toilets that meet one traveller need. Dense clusters
-      suggest stronger access, while sparse areas suggest that travellers may need to plan
-      stops more carefully.
+  Reading guide: each panel filters the toilet dataset by one traveller need. Points show
+  toilets that support that need, so dense clusters suggest stronger access while sparse
+  areas suggest that travellers may need to plan stops more carefully.
     </p>
   </div>
 </section>
@@ -339,7 +355,7 @@
 <section class="section">
   <div class="section-label">Traveller personas</div>
 
-  <h2>8. Does the toilet network work equally well for different travellers?</h2>
+  <h2>8. Night drivers are better supported than caravan travellers</h2> 
 
   <p>
     A public toilet network can look strong overall, but still feel weak for specific
@@ -378,10 +394,11 @@
     <div id="chart9"></div>
 
     <p class="chart-note">
-      Reading guide: each stacked bar shows the weighted contribution of each feature to
-      the final readiness score. The black dot marks the total score. This score is not an
-      official rating; it is a simple index designed to compare road-trip toilet support
-      across states.
+  Reading guide: each stacked bar shows the weighted contribution of each feature to
+  the final readiness score. The black dot marks the total score. Readiness score =
+  weighted average of five facility-support features: accessible access 30%, 24-hour
+  access 25%, parking 20%, baby-change facilities 15%, and showers 10%. This score is
+  not an official rating.
     </p>
   </div>
 </section>
@@ -412,7 +429,7 @@
   not simply adding toilets everywhere. Improvements should target places where travel
   pressure is high but traveller-support features are weaker.
     </p>
-    
+
   </div>
 </section>
 

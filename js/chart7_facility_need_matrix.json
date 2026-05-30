@@ -60,7 +60,7 @@
   ],
   "vconcat": [
     {
-      "width": 760,
+      "width": 540,
       "height": 35,
       "data": {
         "values": [
@@ -91,7 +91,7 @@
       }
     },
     {
-      "width": 610,
+      "width": 540,
       "height": 80,
       "transform": [
         {
@@ -205,7 +205,7 @@
     {
       "hconcat": [
         {
-          "width": 610,
+          "width": 540,
           "height": 390,
           "layer": [
             {
@@ -328,7 +328,7 @@
           ]
         },
         {
-          "width": 145,
+          "width": 110,
           "height": 390,
           "transform": [
             {

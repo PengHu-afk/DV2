@@ -1,188 +1,582 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Small multiple maps showing public toilets that support different road-trip traveller needs, arranged in a 2x2 grid with a consistent Australia base map.",
+  "description": "Small multiple maps showing public toilets that support different road-trip traveller needs, manually arranged as a 2x2 grid.",
   "title": {
     "text": "Different road-trip needs create different toilet maps",
-    "subtitle": "Each panel filters the toilet network by one traveller need and shows how support changes across Australia.",
+    "subtitle": "Each panel filters the toilet network by one traveller need.",
     "anchor": "start",
     "fontSize": 20,
     "subtitleFontSize": 13
   },
-  "data": {
-    "url": "data_clean/toilet_need_map_long.csv"
-  },
-  "facet": {
-    "field": "Traveller_Need",
-    "type": "nominal",
-    "columns": 2,
-    "sort": [
-      "24-hour access",
-      "Accessible access",
-      "Family support",
-      "Caravan support"
-    ],
-    "header": {
-      "title": null,
-      "labelFontSize": 14,
-      "labelFontWeight": "bold",
-      "labelColor": "#2b2118"
-    }
-  },
-  "spec": {
-    "width": 300,
-    "height": 220,
-    "projection": {
-      "type": "mercator"
-    },
-    "layer": [
-      {
-        "data": {
-          "url": "https://raw.githubusercontent.com/rowanhogan/australian-states/master/states.geojson",
-          "format": {
-            "type": "geojson"
-          }
-        },
-        "mark": {
-          "type": "geoshape",
-          "fill": "#f8f5f0",
-          "stroke": "#d9d2c8",
-          "strokeWidth": 0.8
-        }
-      },
-      {
-        "transform": [
-          {
-            "filter": "isValid(datum.Longitude) && isValid(datum.Latitude)"
+  "vconcat": [
+    {
+      "hconcat": [
+        {
+          "title": {
+            "text": "24-hour access",
+            "fontSize": 14,
+            "fontWeight": "bold",
+            "anchor": "start"
           },
-          {
-            "filter": "datum.Longitude >= 112 && datum.Longitude <= 154 && datum.Latitude >= -44 && datum.Latitude <= -10"
-          }
-        ],
-        "mark": {
-          "type": "circle",
-          "size": 7,
-          "opacity": 0.22
-        },
-        "encoding": {
-          "longitude": {
-            "field": "Longitude",
-            "type": "quantitative"
+          "width": 300,
+          "height": 220,
+          "projection": {
+            "type": "mercator"
           },
-          "latitude": {
-            "field": "Latitude",
-            "type": "quantitative"
-          },
-          "color": {
-            "field": "Traveller_Need",
-            "type": "nominal",
-            "legend": null,
-            "scale": {
-              "domain": [
-                "24-hour access",
-                "Accessible access",
-                "Family support",
-                "Caravan support"
+          "layer": [
+            {
+              "data": {
+                "url": "https://raw.githubusercontent.com/rowanhogan/australian-states/master/states.geojson",
+                "format": {
+                  "type": "geojson"
+                }
+              },
+              "mark": {
+                "type": "geoshape",
+                "fill": "#f8f5f0",
+                "stroke": "#d9d2c8",
+                "strokeWidth": 0.8
+              }
+            },
+            {
+              "data": {
+                "url": "data_clean/toilet_need_map_long.csv"
+              },
+              "transform": [
+                {
+                  "filter": "datum.Traveller_Need == '24-hour access'"
+                },
+                {
+                  "filter": "isValid(datum.Longitude) && isValid(datum.Latitude)"
+                },
+                {
+                  "filter": "datum.Longitude >= 112 && datum.Longitude <= 154 && datum.Latitude >= -44 && datum.Latitude <= -10"
+                }
               ],
-              "range": [
-                "#6b4f3f",
-                "#4f6f7f",
-                "#b77945",
-                "#5f7f58"
-              ]
+              "mark": {
+                "type": "circle",
+                "size": 6,
+                "opacity": 0.22,
+                "color": "#6b4f3f"
+              },
+              "encoding": {
+                "longitude": {
+                  "field": "Longitude",
+                  "type": "quantitative"
+                },
+                "latitude": {
+                  "field": "Latitude",
+                  "type": "quantitative"
+                },
+                "tooltip": [
+                  {
+                    "field": "Name",
+                    "type": "nominal",
+                    "title": "Toilet name"
+                  },
+                  {
+                    "field": "Town",
+                    "type": "nominal",
+                    "title": "Town"
+                  },
+                  {
+                    "field": "State",
+                    "type": "nominal",
+                    "title": "State"
+                  },
+                  {
+                    "field": "FacilityType",
+                    "type": "nominal",
+                    "title": "Facility type"
+                  }
+                ]
+              }
+            },
+            {
+              "data": {
+                "url": "data_clean/toilet_need_map_long.csv"
+              },
+              "transform": [
+                {
+                  "filter": "datum.Traveller_Need == '24-hour access'"
+                },
+                {
+                  "aggregate": [
+                    {
+                      "op": "count",
+                      "field": "FacilityID",
+                      "as": "Need_Count"
+                    }
+                  ]
+                },
+                {
+                  "calculate": "format(datum.Need_Count, ',') + ' toilets'",
+                  "as": "Need_Count_Label"
+                },
+                {
+                  "calculate": "113.5",
+                  "as": "Note_Longitude"
+                },
+                {
+                  "calculate": "-12",
+                  "as": "Note_Latitude"
+                }
+              ],
+              "mark": {
+                "type": "text",
+                "align": "left",
+                "baseline": "top",
+                "fontSize": 12,
+                "fontWeight": "bold",
+                "color": "#2b2118",
+                "stroke": "white",
+                "strokeWidth": 4
+              },
+              "encoding": {
+                "longitude": {
+                  "field": "Note_Longitude",
+                  "type": "quantitative"
+                },
+                "latitude": {
+                  "field": "Note_Latitude",
+                  "type": "quantitative"
+                },
+                "text": {
+                  "field": "Need_Count_Label",
+                  "type": "nominal"
+                }
+              }
             }
+          ]
+        },
+        {
+          "title": {
+            "text": "Accessible access",
+            "fontSize": 14,
+            "fontWeight": "bold",
+            "anchor": "start"
           },
-          "tooltip": [
+          "width": 300,
+          "height": 220,
+          "projection": {
+            "type": "mercator"
+          },
+          "layer": [
             {
-              "field": "Name",
-              "type": "nominal",
-              "title": "Toilet name"
+              "data": {
+                "url": "https://raw.githubusercontent.com/rowanhogan/australian-states/master/states.geojson",
+                "format": {
+                  "type": "geojson"
+                }
+              },
+              "mark": {
+                "type": "geoshape",
+                "fill": "#f8f5f0",
+                "stroke": "#d9d2c8",
+                "strokeWidth": 0.8
+              }
             },
             {
-              "field": "Town",
-              "type": "nominal",
-              "title": "Town"
+              "data": {
+                "url": "data_clean/toilet_need_map_long.csv"
+              },
+              "transform": [
+                {
+                  "filter": "datum.Traveller_Need == 'Accessible access'"
+                },
+                {
+                  "filter": "isValid(datum.Longitude) && isValid(datum.Latitude)"
+                },
+                {
+                  "filter": "datum.Longitude >= 112 && datum.Longitude <= 154 && datum.Latitude >= -44 && datum.Latitude <= -10"
+                }
+              ],
+              "mark": {
+                "type": "circle",
+                "size": 6,
+                "opacity": 0.22,
+                "color": "#4f6f7f"
+              },
+              "encoding": {
+                "longitude": {
+                  "field": "Longitude",
+                  "type": "quantitative"
+                },
+                "latitude": {
+                  "field": "Latitude",
+                  "type": "quantitative"
+                },
+                "tooltip": [
+                  {
+                    "field": "Name",
+                    "type": "nominal",
+                    "title": "Toilet name"
+                  },
+                  {
+                    "field": "Town",
+                    "type": "nominal",
+                    "title": "Town"
+                  },
+                  {
+                    "field": "State",
+                    "type": "nominal",
+                    "title": "State"
+                  },
+                  {
+                    "field": "FacilityType",
+                    "type": "nominal",
+                    "title": "Facility type"
+                  }
+                ]
+              }
             },
             {
-              "field": "State",
-              "type": "nominal",
-              "title": "State"
-            },
-            {
-              "field": "FacilityType",
-              "type": "nominal",
-              "title": "Facility type"
-            },
-            {
-              "field": "Traveller_Need",
-              "type": "nominal",
-              "title": "Traveller need"
+              "data": {
+                "url": "data_clean/toilet_need_map_long.csv"
+              },
+              "transform": [
+                {
+                  "filter": "datum.Traveller_Need == 'Accessible access'"
+                },
+                {
+                  "aggregate": [
+                    {
+                      "op": "count",
+                      "field": "FacilityID",
+                      "as": "Need_Count"
+                    }
+                  ]
+                },
+                {
+                  "calculate": "format(datum.Need_Count, ',') + ' toilets'",
+                  "as": "Need_Count_Label"
+                },
+                {
+                  "calculate": "113.5",
+                  "as": "Note_Longitude"
+                },
+                {
+                  "calculate": "-12",
+                  "as": "Note_Latitude"
+                }
+              ],
+              "mark": {
+                "type": "text",
+                "align": "left",
+                "baseline": "top",
+                "fontSize": 12,
+                "fontWeight": "bold",
+                "color": "#2b2118",
+                "stroke": "white",
+                "strokeWidth": 4
+              },
+              "encoding": {
+                "longitude": {
+                  "field": "Note_Longitude",
+                  "type": "quantitative"
+                },
+                "latitude": {
+                  "field": "Note_Latitude",
+                  "type": "quantitative"
+                },
+                "text": {
+                  "field": "Need_Count_Label",
+                  "type": "nominal"
+                }
+              }
             }
           ]
         }
-      },
-      {
-        "transform": [
-          {
-            "aggregate": [
-              {
-                "op": "count",
-                "field": "FacilityID",
-                "as": "Need_Count"
+      ]
+    },
+    {
+      "hconcat": [
+        {
+          "title": {
+            "text": "Family support",
+            "fontSize": 14,
+            "fontWeight": "bold",
+            "anchor": "start"
+          },
+          "width": 300,
+          "height": 220,
+          "projection": {
+            "type": "mercator"
+          },
+          "layer": [
+            {
+              "data": {
+                "url": "https://raw.githubusercontent.com/rowanhogan/australian-states/master/states.geojson",
+                "format": {
+                  "type": "geojson"
+                }
+              },
+              "mark": {
+                "type": "geoshape",
+                "fill": "#f8f5f0",
+                "stroke": "#d9d2c8",
+                "strokeWidth": 0.8
               }
-            ],
-            "groupby": [
-              "Traveller_Need"
-            ]
-          },
-          {
-            "calculate": "format(datum.Need_Count, ',') + ' toilets'",
-            "as": "Need_Count_Label"
-          },
-          {
-            "calculate": "113.4",
-            "as": "Note_Longitude"
-          },
-          {
-            "calculate": "-11.8",
-            "as": "Note_Latitude"
-          }
-        ],
-        "mark": {
-          "type": "text",
-          "align": "left",
-          "baseline": "top",
-          "fontSize": 12,
-          "fontWeight": "bold",
-          "color": "#2b2118",
-          "stroke": "white",
-          "strokeWidth": 4
+            },
+            {
+              "data": {
+                "url": "data_clean/toilet_need_map_long.csv"
+              },
+              "transform": [
+                {
+                  "filter": "datum.Traveller_Need == 'Family support'"
+                },
+                {
+                  "filter": "isValid(datum.Longitude) && isValid(datum.Latitude)"
+                },
+                {
+                  "filter": "datum.Longitude >= 112 && datum.Longitude <= 154 && datum.Latitude >= -44 && datum.Latitude <= -10"
+                }
+              ],
+              "mark": {
+                "type": "circle",
+                "size": 6,
+                "opacity": 0.22,
+                "color": "#b77945"
+              },
+              "encoding": {
+                "longitude": {
+                  "field": "Longitude",
+                  "type": "quantitative"
+                },
+                "latitude": {
+                  "field": "Latitude",
+                  "type": "quantitative"
+                },
+                "tooltip": [
+                  {
+                    "field": "Name",
+                    "type": "nominal",
+                    "title": "Toilet name"
+                  },
+                  {
+                    "field": "Town",
+                    "type": "nominal",
+                    "title": "Town"
+                  },
+                  {
+                    "field": "State",
+                    "type": "nominal",
+                    "title": "State"
+                  },
+                  {
+                    "field": "FacilityType",
+                    "type": "nominal",
+                    "title": "Facility type"
+                  }
+                ]
+              }
+            },
+            {
+              "data": {
+                "url": "data_clean/toilet_need_map_long.csv"
+              },
+              "transform": [
+                {
+                  "filter": "datum.Traveller_Need == 'Family support'"
+                },
+                {
+                  "aggregate": [
+                    {
+                      "op": "count",
+                      "field": "FacilityID",
+                      "as": "Need_Count"
+                    }
+                  ]
+                },
+                {
+                  "calculate": "format(datum.Need_Count, ',') + ' toilets'",
+                  "as": "Need_Count_Label"
+                },
+                {
+                  "calculate": "113.5",
+                  "as": "Note_Longitude"
+                },
+                {
+                  "calculate": "-12",
+                  "as": "Note_Latitude"
+                }
+              ],
+              "mark": {
+                "type": "text",
+                "align": "left",
+                "baseline": "top",
+                "fontSize": 12,
+                "fontWeight": "bold",
+                "color": "#2b2118",
+                "stroke": "white",
+                "strokeWidth": 4
+              },
+              "encoding": {
+                "longitude": {
+                  "field": "Note_Longitude",
+                  "type": "quantitative"
+                },
+                "latitude": {
+                  "field": "Note_Latitude",
+                  "type": "quantitative"
+                },
+                "text": {
+                  "field": "Need_Count_Label",
+                  "type": "nominal"
+                }
+              }
+            }
+          ]
         },
-        "encoding": {
-          "longitude": {
-            "field": "Note_Longitude",
-            "type": "quantitative"
+        {
+          "title": {
+            "text": "Caravan support",
+            "fontSize": 14,
+            "fontWeight": "bold",
+            "anchor": "start"
           },
-          "latitude": {
-            "field": "Note_Latitude",
-            "type": "quantitative"
+          "width": 300,
+          "height": 220,
+          "projection": {
+            "type": "mercator"
           },
-          "text": {
-            "field": "Need_Count_Label",
-            "type": "nominal"
-          }
+          "layer": [
+            {
+              "data": {
+                "url": "https://raw.githubusercontent.com/rowanhogan/australian-states/master/states.geojson",
+                "format": {
+                  "type": "geojson"
+                }
+              },
+              "mark": {
+                "type": "geoshape",
+                "fill": "#f8f5f0",
+                "stroke": "#d9d2c8",
+                "strokeWidth": 0.8
+              }
+            },
+            {
+              "data": {
+                "url": "data_clean/toilet_need_map_long.csv"
+              },
+              "transform": [
+                {
+                  "filter": "datum.Traveller_Need == 'Caravan support'"
+                },
+                {
+                  "filter": "isValid(datum.Longitude) && isValid(datum.Latitude)"
+                },
+                {
+                  "filter": "datum.Longitude >= 112 && datum.Longitude <= 154 && datum.Latitude >= -44 && datum.Latitude <= -10"
+                }
+              ],
+              "mark": {
+                "type": "circle",
+                "size": 6,
+                "opacity": 0.22,
+                "color": "#5f7f58"
+              },
+              "encoding": {
+                "longitude": {
+                  "field": "Longitude",
+                  "type": "quantitative"
+                },
+                "latitude": {
+                  "field": "Latitude",
+                  "type": "quantitative"
+                },
+                "tooltip": [
+                  {
+                    "field": "Name",
+                    "type": "nominal",
+                    "title": "Toilet name"
+                  },
+                  {
+                    "field": "Town",
+                    "type": "nominal",
+                    "title": "Town"
+                  },
+                  {
+                    "field": "State",
+                    "type": "nominal",
+                    "title": "State"
+                  },
+                  {
+                    "field": "FacilityType",
+                    "type": "nominal",
+                    "title": "Facility type"
+                  }
+                ]
+              }
+            },
+            {
+              "data": {
+                "url": "data_clean/toilet_need_map_long.csv"
+              },
+              "transform": [
+                {
+                  "filter": "datum.Traveller_Need == 'Caravan support'"
+                },
+                {
+                  "aggregate": [
+                    {
+                      "op": "count",
+                      "field": "FacilityID",
+                      "as": "Need_Count"
+                    }
+                  ]
+                },
+                {
+                  "calculate": "format(datum.Need_Count, ',') + ' toilets'",
+                  "as": "Need_Count_Label"
+                },
+                {
+                  "calculate": "113.5",
+                  "as": "Note_Longitude"
+                },
+                {
+                  "calculate": "-12",
+                  "as": "Note_Latitude"
+                }
+              ],
+              "mark": {
+                "type": "text",
+                "align": "left",
+                "baseline": "top",
+                "fontSize": 12,
+                "fontWeight": "bold",
+                "color": "#2b2118",
+                "stroke": "white",
+                "strokeWidth": 4
+              },
+              "encoding": {
+                "longitude": {
+                  "field": "Note_Longitude",
+                  "type": "quantitative"
+                },
+                "latitude": {
+                  "field": "Note_Latitude",
+                  "type": "quantitative"
+                },
+                "text": {
+                  "field": "Need_Count_Label",
+                  "type": "nominal"
+                }
+              }
+            }
+          ]
         }
-      }
-    ]
-  },
-  "resolve": {
-    "scale": {
-      "color": "independent"
+      ]
     }
-  },
+  ],
   "config": {
     "view": {
       "stroke": "#e1d7ca"
     },
-    "font": "Arial"
+    "font": "Arial",
+    "concat": {
+      "spacing": 18
+    }
   }
 }
