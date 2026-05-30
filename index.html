@@ -17,166 +17,234 @@
     body {
   margin: 0;
   font-family: 'Inter', Arial, Helvetica, sans-serif;
-  background-color: #f3f6f8;
+  background-color: #f5f7fa;
   color: #1f2a33;
 }
 
 .page {
-  max-width: 1080px;
+  width: min(1440px, calc(100% - 64px));
   margin: 0 auto;
-  padding: 0 32px 70px 32px;
 }
 
 /* =========================
-   HERO SECTION
+   HERO
    ========================= */
 
 .hero {
-  background: linear-gradient(135deg, #123654 0%, #246f9f 100%);
+  width: 100%;
+  background: linear-gradient(135deg, #0b2d4d 0%, #164f78 100%);
   color: #ffffff;
-  padding: 56px 32px 46px 32px;
-  margin-bottom: 42px;
+  padding: 72px 0 62px 0;
 }
 
 .hero-inner {
-  max-width: 1080px;
+  width: min(1440px, calc(100% - 64px));
   margin: 0 auto;
 }
 
 .hero-tag {
   display: inline-block;
   font-size: 12px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
-  background-color: rgba(255, 255, 255, 0.16);
-  padding: 6px 12px;
+  background-color: rgba(255, 255, 255, 0.14);
+  padding: 7px 14px;
   border-radius: 999px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .hero h1 {
   font-family: 'Roboto Condensed', 'Inter', Arial, sans-serif;
-  font-size: 46px;
-  line-height: 1.05;
-  margin: 0 0 14px 0;
-  letter-spacing: -0.02em;
+  font-size: 62px;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  margin: 0 0 18px 0;
+  color: #ffffff;
+  max-width: 900px;
 }
 
 .hero .subtitle {
-  font-size: 17px;
-  line-height: 1.6;
-  max-width: 780px;
+  max-width: 880px;
+  font-size: 18px;
+  line-height: 1.65;
   color: rgba(255, 255, 255, 0.88);
-  margin-bottom: 28px;
-}
-
-.hero-stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-  max-width: 850px;
-}
-
-.hero-stat {
-  border-left: 3px solid rgba(255, 255, 255, 0.55);
-  padding-left: 14px;
-}
-
-.hero-stat .number {
-  font-size: 24px;
-  font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 4px;
-}
-
-.hero-stat .label {
-  font-size: 12px;
-  line-height: 1.35;
-  color: rgba(255, 255, 255, 0.78);
+  margin: 0;
 }
 
 /* =========================
-   SECTION STRUCTURE
+   GLOBAL MODULE STYLE
    ========================= */
 
-.story-section {
-  margin: 70px auto 74px auto;
-  max-width: 960px;
+.module {
+  margin: 58px 0 72px 0;
 }
 
-.story-heading {
-  text-align: center;
-  margin-bottom: 34px;
+.module-header {
+  margin-bottom: 26px;
+  max-width: 820px;
 }
 
-.story-heading .section-label {
+.module-label {
   font-family: 'Roboto Condensed', 'Inter', Arial, sans-serif;
   font-size: 13px;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  color: #1f6f9e;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
-  color: #276e9e;
   margin-bottom: 8px;
 }
 
-.story-heading h2 {
+.module-header h2 {
   font-family: 'Roboto Condensed', 'Inter', Arial, sans-serif;
-  font-size: 27px;
-  line-height: 1.15;
-  margin: 0 0 8px 0;
-  color: #142b3d;
+  font-size: 34px;
+  line-height: 1.12;
+  letter-spacing: -0.018em;
+  margin: 0 0 10px 0;
+  color: #102a3d;
 }
 
-.story-heading p {
-  font-size: 14px;
+.module-header p {
+  font-size: 15px;
   line-height: 1.65;
-  max-width: 720px;
-  margin: 0 auto;
-  color: #4d5b65;
+  color: #4b5b66;
+  margin: 0;
 }
 
 /* =========================
-   CONTENT LAYOUTS
+   12-COLUMN GRID HELPERS
    ========================= */
 
-.two-column {
+.grid-12 {
   display: grid;
-  grid-template-columns: 0.85fr 1.25fr;
-  gap: 28px;
+  grid-template-columns: repeat(12, 1fr);
+  column-gap: 28px;
+  row-gap: 24px;
   align-items: start;
-  margin-bottom: 28px;
 }
 
-.two-column.reverse {
-  grid-template-columns: 1.25fr 0.85fr;
+.col-4 {
+  grid-column: span 4;
 }
 
-.narrative-text h3 {
+.col-5 {
+  grid-column: span 5;
+}
+
+.col-6 {
+  grid-column: span 6;
+}
+
+.col-7 {
+  grid-column: span 7;
+}
+
+.col-8 {
+  grid-column: span 8;
+}
+
+.col-12 {
+  grid-column: span 12;
+}
+
+/* =========================
+   TEXT PANEL
+   ========================= */
+
+.text-panel {
+  padding-top: 4px;
+}
+
+.text-panel h3 {
   font-family: 'Roboto Condensed', 'Inter', Arial, sans-serif;
-  font-size: 21px;
-  line-height: 1.2;
-  margin: 0 0 12px 0;
-  color: #142b3d;
-}
-
-.narrative-text p {
-  font-size: 14px;
-  line-height: 1.7;
-  color: #374854;
+  font-size: 25px;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: #102a3d;
   margin: 0 0 14px 0;
 }
 
-.chart-card {
-  background-color: #ffffff;
-  border: 1px solid #dfe7ec;
-  border-radius: 12px;
-  padding: 22px;
-  box-shadow: 0 5px 18px rgba(33, 56, 75, 0.09);
+.text-panel p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #3d4d58;
+  margin: 0 0 14px 0;
+}
+
+.custom-legend {
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1px solid #d8e1e8;
+}
+
+.custom-legend-title {
+  font-family: 'Roboto Condensed', 'Inter', Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #1f6f9e;
+  margin-bottom: 12px;
+}
+
+.legend-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 18px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #43515b;
+}
+
+.legend-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.legend-dot.act { background-color: #e0c24d; }
+.legend-dot.nsw { background-color: #ef8a2f; }
+.legend-dot.nt  { background-color: #e46a6a; }
+.legend-dot.qld { background-color: #7db8b6; }
+.legend-dot.sa  { background-color: #72a96d; }
+.legend-dot.tas { background-color: #d2b75e; }
+.legend-dot.vic { background-color: #b68fb2; }
+.legend-dot.wa  { background-color: #f3a4a8; }
+
+/* =========================
+   BORDERLESS CHARTS
+   ========================= */
+
+.viz {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  padding: 0;
   overflow-x: hidden;
 }
 
-.chart-card.wide {
-  margin-top: 22px;
+.viz-tight {
+  margin-top: 12px;
+}
+
+.viz-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.chart-note {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #5c6872;
+  margin: 10px 0 0 0;
 }
 
 .vega-embed {
@@ -191,31 +259,124 @@
 }
 
 /* =========================
-   INSIGHT BOX
+   KPI NUMBERS
    ========================= */
 
-.insight-box {
-  margin-top: 18px;
-  margin-bottom: 28px;
-  padding: 14px 18px;
-  background-color: #eaf4fb;
-  border-left: 4px solid #2e87bd;
-  border-radius: 4px;
-  color: #25475d;
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 26px;
+}
+
+.kpi-item {
+  border-left: 4px solid #1f6f9e;
+  padding-left: 14px;
+}
+
+.kpi-number {
+  font-family: 'Roboto Condensed', 'Inter', Arial, sans-serif;
+  font-size: 42px;
+  line-height: 1;
+  font-weight: 700;
+  color: #102a3d;
+  margin-bottom: 6px;
+}
+
+.kpi-label {
+  font-size: 12px;
+  line-height: 1.4;
+  color: #5b6870;
+}
+
+/* =========================
+   HERO KPI STRIP
+   ========================= */
+
+.hero-kpi-strip {
+  width: 100%;
+  background-color: #f5f7fa;
+  border-bottom: 1px solid #d8e1e8;
+}
+
+.hero-kpi-inner {
+  width: min(1440px, calc(100% - 64px));
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+  padding: 28px 0 22px 0;
+}
+
+.hero-kpi-item {
+  border-left: 5px solid #1f6f9e;
+  padding-left: 18px;
+}
+
+.hero-kpi-number {
+  font-family: 'Roboto Condensed', 'Inter', Arial, sans-serif;
+  font-size: 48px;
+  line-height: 1;
+  font-weight: 700;
+  color: #102a3d;
+  margin-bottom: 8px;
+}
+
+.hero-kpi-label {
   font-size: 13px;
+  line-height: 1.45;
+  color: #53636d;
+}
+
+@media (max-width: 900px) {
+  .hero-kpi-inner {
+    grid-template-columns: 1fr;
+    width: min(100% - 36px, 1440px);
+  }
+}
+
+/* =========================
+   MAP GRID
+   ========================= */
+
+.map-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+}
+
+/* =========================
+   INSIGHT / FINAL STRIP
+   ========================= */
+
+.insight-line {
+  margin-top: 20px;
+  padding: 14px 18px;
+  background-color: #e7f2f8;
+  border-left: 4px solid #1f6f9e;
+  color: #294b62;
+  font-size: 14px;
   line-height: 1.6;
 }
 
-.insight-box strong {
-  color: #13364f;
+.insight-line strong {
+  color: #102a3d;
 }
 
-.chart-note {
-  font-size: 12px;
-  color: #5b6870;
-  line-height: 1.55;
-  margin-top: 12px;
-  margin-bottom: 0;
+.final-strip {
+  margin-top: 34px;
+  padding: 44px 80px;
+  background-color: #e7f2f8;
+  text-align: center;
+}
+
+.final-strip blockquote {
+  margin: 0;
+  font-family: 'Roboto Condensed', 'Inter', Arial, sans-serif;
+  font-size: 34px;
+  line-height: 1.25;
+  font-weight: 700;
+  color: #102a3d;
 }
 
 /* =========================
@@ -223,226 +384,371 @@
    ========================= */
 
 footer {
-  max-width: 960px;
-  margin: 80px auto 0 auto;
-  padding-top: 24px;
+  margin: 72px 0 0 0;
+  padding: 24px 0 40px 0;
   border-top: 1px solid #d5dde3;
   font-size: 12px;
-  color: #66747d;
   line-height: 1.65;
-}
-
-a {
-  color: #276e9e;
+  color: #66747d;
 }
 
 /* =========================
    RESPONSIVE
    ========================= */
 
-@media (max-width: 850px) {
+@media (max-width: 1000px) {
+  .page,
+  .hero-inner {
+    width: min(100% - 36px, 1440px);
+  }
+
   .hero h1 {
-    font-size: 36px;
+    font-size: 44px;
   }
 
-  .hero-stats {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .two-column,
-  .two-column.reverse {
+  .grid-12 {
     grid-template-columns: 1fr;
   }
 
-  .page {
-    padding: 0 20px 60px 20px;
+  .col-4,
+  .col-5,
+  .col-6,
+  .col-7,
+  .col-8,
+  .col-12 {
+    grid-column: span 1;
   }
+
+  .kpi-row {
+    grid-template-columns: 1fr;
+  }
+
+  .final-strip {
+    padding: 32px 24px;
+  }
+
+  .final-strip blockquote {
+    font-size: 26px;
+  }
+}
+
+/* =========================
+   
+   ========================= */
+  .module1-layout {
+  display: grid;
+  grid-template-columns: 35% 65%;
+  column-gap: 34px;
+  row-gap: 26px;
+  align-items: start;
+}
+
+.seasonal-note {
+  padding-top: 12px;
+  border-top: 1px solid #d8e1e8;
+}
+
+.seasonal-note h3 {
+  font-family: 'Roboto Condensed', 'Inter', Arial, sans-serif;
+  font-size: 23px;
+  line-height: 1.15;
+  margin: 0 0 12px 0;
+  color: #102a3d;
+}
+
+.seasonal-note p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #3d4d58;
+  margin: 0 0 14px 0;
+}
+
+.mini-insight {
+  margin-top: 18px;
+  padding: 13px 15px;
+  background-color: #e7f2f8;
+  border-left: 4px solid #1f6f9e;
+  color: #294b62;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.mini-insight strong {
+  color: #102a3d;
+}
+
+@media (max-width: 1000px) {
+  .module1-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chart-story {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #d8e1e8;
+}
+
+.chart-story h4 {
+  font-family: 'Roboto Condensed', 'Inter', Arial, sans-serif;
+  font-size: 18px;
+  line-height: 1.2;
+  color: #102a3d;
+  margin: 0 0 10px 0;
+}
+
+.chart-story p {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #42525d;
+  margin: 0 0 12px 0;
+}
+
+.chart-story .story-highlight {
+  margin-top: 12px;
+  padding: 12px 14px;
+  background-color: #e7f2f8;
+  border-left: 4px solid #1f6f9e;
+  color: #294b62;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.chart-story .story-highlight strong {
+  color: #102a3d;
+}
+
+.insight-line {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.module-wide-insight {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 26px;
+  padding: 15px 20px;
+  background-color: #e7f2f8;
+  border-left: 4px solid #1f6f9e;
+  color: #294b62;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.module-wide-insight strong {
+  color: #102a3d;
+}
+
+.module4-grid {
+  align-items: start;
+}
+
+.feature-side {
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-side .chart-story {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid #d8e1e8;
+}
+
+.feature-side .story-highlight {
+  margin-top: 14px;
+  padding: 14px 16px;
+  background-color: #e7f2f8;
+  border-left: 4px solid #1f6f9e;
+  color: #294b62;
+  font-size: 13px;
+  line-height: 1.55;
 }
   </style>
 </head>
 
 
-<body>  
+<body>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-tag">Australian road trips · Public toilet access · 2025</div>
+
+      <h1>The Hidden Comfort Map of Australian Road Trips</h1>
+
+      <p class="subtitle">
+        This visualisation explores whether public toilet access supports the needs of
+        road-trip travellers across Australia. It looks beyond where toilets exist and asks
+        whether they are useful for night drivers, families, accessible travellers and
+        caravan users.
+      </p>
+    </div>
+  </header>
+
   <main class="page">
 
-<header class="hero">
-  <div class="hero-inner">
-    <div class="hero-tag">Australian road trips · Public toilet access · 2025</div>
-
-    <h1>The Hidden Comfort Map of Australian Road Trips</h1>
-
-    <p class="subtitle">
-      This visualisation explores whether public toilet access supports the needs of
-      road-trip travellers across Australia. It looks beyond where toilets exist and asks
-      whether they are useful for night drivers, families, accessible travellers and
-      caravan users.
-    </p>
-
-    <div class="hero-stats">
-      <div class="hero-stat">
-        <div class="number">102.3M</div>
-        <div class="label">Domestic trips in the latest December quarter</div>
-      </div>
-
-      <div class="hero-stat">
-        <div class="number">96.2M</div>
-        <div class="label">Visitor nights creating demand for roadside stops</div>
-      </div>
-
-      <div class="hero-stat">
-        <div class="number">$40.0B</div>
-        <div class="label">Regional expenditure linked to domestic tourism</div>
-      </div>
-
-      <div class="hero-stat">
-        <div class="number">4 groups</div>
-        <div class="label">Night drivers, families, accessible travellers and caravan users</div>
-      </div>
-    </div>
-  </div>
-</header>
-
-<main class="page">
-
-  <section class="story-section">
-    <div class="story-heading">
-      <div class="section-label">The question</div>
-      <h2>Are public toilets available where road-trip travellers need them?</h2>
-      <p>
-        The project moves from travel demand to spatial access, then from toilet quantity
-        to traveller readiness. The final section turns the evidence into improvement
-        priorities.
-      </p>
-    </div>
-  </section>
-
-
-    <!-- =========================
-         section 1: chart 1 and chart 2
-         ========================= -->
-
-    <section class="story-section">
-  <div class="story-heading">
-    <div class="section-label">Where demand starts</div>
-    <h2>Domestic travel creates repeated pressure on roadside facilities</h2>
-    <p>
-      Before judging whether public toilets are enough, the story first identifies where
-      domestic travel is concentrated and when tourism pressure rises across the year.
-    </p>
-  </div>
-
-  <div class="two-column">
-    <div class="narrative-text">
-      <h3>Demand is concentrated in three large states</h3>
-      <p>
-        New South Wales, Victoria and Queensland consistently dominate domestic trips
-        across 2025. This means public toilet access is not just a remote-area issue:
-        the busiest travel states also need reliable roadside facilities.
-      </p>
-      <p>
-        The line chart shows actual travel volume rather than rank, so the scale gap
-        between states is visible.
-      </p>
+<section class="hero-kpi-strip">
+  <div class="hero-kpi-inner">
+    <div class="hero-kpi-item">
+      <div class="hero-kpi-number">102.3M</div>
+      <div class="hero-kpi-label">Domestic trips in the latest December quarter</div>
     </div>
 
-    <div class="chart-card">
-      <div id="chart1"></div>
-      <p class="chart-note">
-        Reading guide: higher lines indicate larger domestic travel demand. Values are shown
-        in million domestic trips for each 2025 quarter.
-      </p>
+    <div class="hero-kpi-item">
+      <div class="hero-kpi-number">96.2M</div>
+      <div class="hero-kpi-label">Visitor nights creating demand for roadside stops</div>
     </div>
-  </div>
 
-  <div class="chart-card wide">
-    <div id="chart2"></div>
-    <p class="chart-note">
-      Reading guide: darker cells indicate higher tourism pressure for the selected metric.
-      Outlined cells mark each state's peak quarter.
-    </p>
-  </div>
-
-  <div class="insight-box">
-    <strong>Key insight:</strong> Travel demand is consistently concentrated in New South Wales,
-    Victoria and Queensland, while seasonal peaks still change across quarters. Reliable
-    roadside facilities are therefore a continuing need, not a one-off peak issue.
+    <div class="hero-kpi-item">
+      <div class="hero-kpi-number">$40.0B</div>
+      <div class="hero-kpi-label">Regional expenditure linked to domestic tourism</div>
+    </div>
   </div>
 </section>
 
     <!-- =========================
-         section 2: chart 3 and chart 4
+         MODULE 1: MACRO TREND
          ========================= -->
+    <section class="module">
+      <div class="module-header">
+        <div class="module-label">Module 1 · Macro trend</div>
+        <h2>Domestic travel creates repeated pressure on roadside facilities</h2>
+        <p>
+          Before judging whether public toilets are enough, the story first identifies where
+          domestic travel is concentrated and when tourism pressure rises across the year.
+        </p>
+      </div>
 
-<section class="story-section">
-  <div class="story-heading">
-    <div class="section-label">Where toilets are</div>
-    <h2>Toilet access is spatial, not just numerical</h2>
-    <p>
-      Raw toilet counts can overemphasise cities. The next maps look at relative supply
-      and show how the toilet network changes when filtered by traveller needs.
-    </p>
-  </div>
+    <div class="module1-layout">
+      <div class="text-panel">
+        <h3>Demand is concentrated in a few large states</h3>
 
-  <div class="chart-card wide">
-    <div id="chart3"></div>
-    <p class="chart-note">
-      Reading guide: each square represents a geographic grid cell. Darker squares indicate
-      lower relative toilet supply per million domestic trips. Blank cells indicate areas with
-      no recorded public toilets or outside the selected grid coverage.
-    </p>
-  </div>
+        <p>
+          New South Wales, Victoria and Queensland consistently dominate domestic trips
+          across 2025. This means public toilet access is not just a remote-area issue:
+          the busiest travel states also need reliable roadside facilities.
+        </p>
 
-  <div class="two-column reverse">
-    <div class="chart-card">
-      <div id="chart4"></div>
-      <p class="chart-note">
-        Reading guide: each panel filters the toilet dataset by one traveller need. Points
-        show toilets that support that need.
-      </p>
+        <p>
+          The line chart shows actual travel volume rather than rank, making the scale gap
+          between states visible.
+        </p>
+
+        <div class="custom-legend">
+          <div class="custom-legend-title">State</div>
+
+          <div class="legend-grid">
+            <div class="legend-item"><span class="legend-dot act"></span>Australian Capital Territory</div>
+            <div class="legend-item"><span class="legend-dot nsw"></span>New South Wales</div>
+            <div class="legend-item"><span class="legend-dot nt"></span>Northern Territory</div>
+            <div class="legend-item"><span class="legend-dot qld"></span>Queensland</div>
+            <div class="legend-item"><span class="legend-dot sa"></span>South Australia</div>
+            <div class="legend-item"><span class="legend-dot tas"></span>Tasmania</div>
+            <div class="legend-item"><span class="legend-dot vic"></span>Victoria</div>
+            <div class="legend-item"><span class="legend-dot wa"></span>Western Australia</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="viz">
+        <div id="chart1"></div>
+        <p class="chart-note">
+          Reading guide: higher lines indicate larger domestic travel demand. Values are shown
+          in million domestic trips for each 2025 quarter.
+        </p>
+      </div>
+
+      <div class="seasonal-note">
+        <h3>Seasonal peaks are not identical across states</h3>
+
+        <p>
+          The heatmap adds a seasonal layer to the story. Even when the largest states stay
+          consistently high, each state reaches its strongest pressure point in a different
+          quarter.
+        </p>
+
+        <p>
+          The outlined cells mark each state's peak quarter, helping show when public toilets
+          may face stronger short-term demand.
+        </p>
+
+        <div class="mini-insight">
+          <strong>How to read this:</strong> darker cells mean stronger tourism pressure for the
+          selected metric. Use the dropdown to switch between trips, visitor nights and
+          expenditure.
+        </div>
+      </div>
+
+      <div class="viz">
+        <div id="chart2"></div>
+        <p class="chart-note">
+          Reading guide: darker cells indicate higher tourism pressure for the selected metric.
+          Outlined cells mark each state's peak quarter.
+        </p>
+      </div>
+
     </div>
 
-    <div class="narrative-text">
-      <h3>Different needs create different maps</h3>
-      <p>
-        The same toilet network looks different for night drivers, accessible travellers,
-        families and caravan users. A place can appear well supplied overall but still be
-        weak for a specific traveller group.
-      </p>
-    </div>
-  </div>
-
-  <div class="insight-box">
-    <strong>Key insight:</strong> Toilet access should be evaluated by usefulness, not only
-    location. Need-based maps reveal gaps that raw toilet counts can hide.
-  </div>
-</section>
+      <div class="insight-line">
+        <strong>Key insight:</strong> Travel demand is consistently concentrated in New South Wales,
+        Victoria and Queensland, while seasonal peaks still change across quarters.
+      </div>
+    </section>
 
     <!-- =========================
-         section 3: chart 5 and chart 6
+         MODULE 2: GEOGRAPHIC DISTRIBUTION
          ========================= -->
+    <section class="module">
+      <div class="module-header">
+        <div class="module-label">Module 2 · Geographic distribution</div>
+        <h2>Toilet access is spatial, not just numerical</h2>
+        <p>
+          Raw toilet counts can overemphasise cities. These maps compare relative supply
+          and show how the toilet network changes when filtered by traveller needs.
+        </p>
+      </div>
 
-<section class="story-section">
-  <div class="story-heading">
-    <div class="section-label">Demand versus supply</div>
+      <div class="grid-12">
+        <div class="col-7 viz">
+          <div id="chart3"></div>
+          <p class="chart-note">
+            Reading guide: darker squares indicate lower relative toilet supply per million
+            domestic trips. Blank cells indicate areas with no recorded toilets or outside
+            the selected grid coverage.
+          </p>
+        </div>
+
+        <div class="col-5 viz">
+          <div id="chart4"></div>
+          <p class="chart-note">
+            Reading guide: each panel filters the toilet dataset by one traveller need.
+            Points show toilets that support that need.
+          </p>
+        </div>
+      </div>
+
+      <div class="insight-line">
+        <strong>Key insight:</strong> A place may appear well supplied overall, but still offer
+        weaker support for families, accessible travellers or caravan users.
+      </div>
+    </section>
+
+      <!-- =========================
+        MODULE 3: RELATIONSHIP ANALYSIS
+        ========================= -->
+<section class="module">
+  <div class="module-header">
+    <div class="module-label">Module 3 · Relationship analysis</div>
     <h2>Large toilet networks can still face pressure</h2>
     <p>
-      The next section compares travel demand, toilet supply and readiness. The question
-      is not simply whether a state has many toilets, but whether those toilets match
+      The next step compares travel demand, toilet supply and readiness. The issue is
+      not simply whether a state has many toilets, but whether those toilets match
       traveller demand and needs.
     </p>
   </div>
 
-  <div class="two-column">
-    <div class="narrative-text">
-      <h3>High supply does not always mean low pressure</h3>
-      <p>
-        States with large toilet networks can still face pressure when domestic travel
-        demand is also high. This is why the chart uses trips per toilet as a pressure
-        measure rather than raw toilet count alone.
-      </p>
-    </div>
-
-    <div class="chart-card">
+  <div class="grid-12">
+    <div class="col-6 viz">
       <div id="chart5"></div>
       <p class="chart-note">
         Reading guide: states higher on the chart face stronger domestic travel demand.
@@ -450,181 +756,200 @@ a {
         per toilet.
       </p>
     </div>
+
+    <div class="col-6 viz">
+      <div id="chart6"></div>
+      <p class="chart-note">
+        Reading guide: brown points show toilet quantity rank, while blue points show
+        road-trip readiness rank. Positive gaps mean readiness rank is worse than
+        quantity rank.
+      </p>
+    </div>
   </div>
 
-  <div class="chart-card wide">
-    <div id="chart6"></div>
-    <p class="chart-note">
-      Reading guide: each row is one state. Brown points show toilet quantity rank, while
-      blue points show road-trip readiness rank. Positive gaps mean readiness rank is worse
-      than quantity rank.
-    </p>
-  </div>
-
-  <div class="insight-box">
+  <div class="insight-line">
     <strong>Key insight:</strong> Quantity and usefulness do not always tell the same story.
-    Road-trip readiness also depends on features such as accessibility, opening hours,
-    parking and traveller facilities.
+    Road-trip readiness also depends on accessibility, opening hours, parking and traveller facilities.
   </div>
 </section>
 
-    <!-- =========================
-         section 4: chart 7 and chart 8
-         ========================= -->
-
-<section class="story-section">
-  <div class="story-heading">
-    <div class="section-label">Who is supported</div>
-    <h2>Different travellers experience the same network differently</h2>
+<!-- =========================
+     MODULE 4: FEATURE BREAKDOWN
+     ========================= -->
+<section class="module">
+  <div class="module-header">
+    <div class="module-label">Module 4 · Feature breakdown</div>
+    <h2>Facility features explain why some toilets are more useful than others</h2>
     <p>
-      This section shifts from infrastructure counts to user needs, asking which facility
-      types and states support night drivers, families, accessible travellers and caravan users.
+      This section shifts from toilet counts to facility usefulness. The heatmap shows which
+      facility types support different traveller needs, while the feature importance chart
+      explains which support features carry the most weight in the readiness score.
     </p>
   </div>
 
-  <div class="chart-card wide">
-    <div id="chart7"></div>
-    <p class="chart-note">
-      Reading guide: darker heatmap cells mean a higher share of toilets in that facility
-      type provide the selected feature. The side bars show how common each facility type is.
-    </p>
-  </div>
-
-  <div class="two-column">
-    <div class="narrative-text">
-      <h3>Night drivers are better supported than caravan travellers</h3>
-      <p>
-        The persona matrix shows that public toilet support is uneven across traveller
-        groups. Night drivers tend to be better supported, while caravan support is weaker
-        and more uneven.
+  <div class="grid-12 module4-grid">
+    <div class="col-7 viz">
+      <div id="chart7"></div>
+      <p class="chart-note">
+        Reading guide: darker heatmap cells mean a higher share of toilets in that facility
+        type provide the selected feature.
       </p>
     </div>
 
-    <div class="chart-card">
+    <div class="col-5 viz feature-side">
       <div id="chart8"></div>
+
       <p class="chart-note">
-        Reading guide: darker cells and percentage labels show stronger support for each
-        traveller persona. Circle size is kept subtle to reduce visual overload.
+        Reading guide: longer bars indicate features with greater weight in the custom
+        road-trip readiness score. Tooltips also show average availability across states.
       </p>
+
+      <div class="chart-story">
+        <h4>Why do these weights matter?</h4>
+
+        <p>
+          The feature importance chart helps explain why some toilets are more useful than
+          others for road-trip travellers. The readiness score does not treat every feature
+          equally. Instead, it gives greater importance to features that make a stop broadly
+          usable, especially for more diverse traveller groups.
+        </p>
+
+        <p>
+          Accessibility and 24-hour access receive the highest weights because they strongly
+          shape whether a toilet can serve travellers reliably across different times and
+          circumstances. Practical features such as parking, baby-change facilities and
+          showers still matter, but they play a more supporting role in the overall score.
+        </p>
+
+        <div class="story-highlight">
+          <strong>Narrative takeaway:</strong> A larger toilet network is not enough on its own.
+          The most useful stops are the ones that combine access, convenience and support for
+          different traveller needs.
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="insight-box">
-    <strong>Key insight:</strong> Public toilet planning should consider user groups, not only
-    total facility counts. A network that works for one traveller may be less useful for another.
+  <div class="module-wide-insight">
+    <strong>Key insight:</strong> Accessibility and 24-hour access matter most in the readiness
+    score, but useful road-trip support also depends on practical features such as parking,
+    baby-change facilities and showers.
   </div>
 </section>
 
     <!-- =========================
-         section 5: chart 9 and chart 10
+         MODULE 5: SEGMENTATION & CONCLUSION
          ========================= -->
+    <section class="module">
+      <div class="module-header">
+        <div class="module-label">Module 5 · Segmentation and conclusion</div>
+        <h2>Improvements should target weaker support features</h2>
+        <p>
+          The final section turns the analysis into a decision framework. The readiness score
+          summarises traveller-support features, while the final matrix identifies where
+          pressure and weaker readiness overlap.
+        </p>
+      </div>
 
-<section class="story-section">
-  <div class="story-heading">
-    <div class="section-label">What should improve</div>
-    <h2>Improvements should target weaker support features</h2>
-    <p>
-      The final section turns the analysis into a decision framework. The readiness score
-      summarises traveller-support features, while the final matrix identifies where
-      pressure and weaker readiness overlap.
-    </p>
-  </div>
+      <div class="grid-12">
+        <div class="col-6 viz">
+          <div id="chart9"></div>
+          <p class="chart-note">
+            Reading guide: each stacked bar shows the weighted contribution of each feature.
+            The black dot marks the total readiness score.
+          </p>
+        </div>
 
-  <div class="two-column reverse">
-    <div class="chart-card">
-      <div id="chart9"></div>
-      <p class="chart-note">
-        Reading guide: each stacked bar shows the weighted contribution of each feature.
-        The black dot marks the total readiness score.
-      </p>
-    </div>
+        <div class="col-6 viz">
+          <div id="chart10"></div>
 
-    <div class="narrative-text">
-      <h3>Readiness is a mix of traveller-support features</h3>
-      <p>
-        The road-trip readiness score combines accessible access, 24-hour access, parking,
-        baby-change facilities and showers. This makes the score more transparent than a
-        single unexplained rating.
-      </p>
-    </div>
-  </div>
+          <p class="chart-note">
+            Reading guide: points further right have higher travel pressure, while points lower
+            on the chart have weaker readiness. No state falls clearly into a worst-case cluster,
+            but improvement should still be targeted.
+          </p>
+        </div>
+      </div>
 
-  <div class="chart-card wide">
-    <div id="chart10"></div>
-    <p class="chart-note">
-      Reading guide: points further right have higher travel pressure, while points lower on
-      the chart have weaker readiness. No state falls clearly into a worst-case cluster, but
-      improvement should still be targeted.
-    </p>
-  </div>
+      <div class="final-analysis-story">
+        <h4>What does this mean for action?</h4>
 
-  <div class="insight-box">
-    <strong>Final takeaway:</strong> The key issue is not simply adding toilets everywhere.
-    Planning should focus on places where travel pressure is high and traveller-support
-    features are weaker.
-  </div>
-</section>
+        <p>
+          The readiness score shows that public toilet quality is built from several support
+          features, not only from the number of toilets available. The final matrix then connects
+          this readiness score with travel pressure, showing where improvement may be most useful.
+        </p>
+
+        <p>
+          NSW, Victoria and Queensland remain busy but relatively prepared, while ACT stands out
+          because its readiness score is much weaker despite moderate pressure. This means
+          improvement should be targeted: the priority is not simply adding more toilets, but
+          improving the support features that make toilets usable for different road-trip travellers.
+        </p>
+      </div>
+
+      <div class="final-strip">
+        <blockquote>
+          The key issue is not simply adding toilets everywhere. Planning should focus on
+          places where travel pressure is high and traveller-support features are weaker.
+        </blockquote>
+      </div>
+    </section>
 
     <footer>
-  <strong>Author:</strong> Peng Hu<br>
-  <strong>Project:</strong> FIT2179 Data Visualisation 2<br>
-  <strong>Topic:</strong> Australian public toilet access for road-trip travellers<br>
-  <strong>Audience:</strong> General Australian road-trip travellers, including night drivers, families, accessible travellers and caravan users.<br>
-  <strong>Data sources:</strong> National Public Toilet Map; Tourism Research Australia Domestic Tourism Statistics; Australian tourism region reference data.<br>
-  <strong>Derived measures:</strong> Trips per toilet, relative toilet supply per million trips, traveller persona support scores, and road-trip readiness score.<br>
-  <strong>Tools:</strong> RStudio for data cleaning; Vega-Lite, HTML and CSS for visualisation design.<br>
-  <strong>Date accessed / prepared:</strong> May 2026.
-</footer>
+      <strong>Author:</strong> Peng Hu<br>
+      <strong>Project:</strong> FIT2179 Data Visualisation 2<br>
+      <strong>Topic:</strong> Australian public toilet access for road-trip travellers<br>
+      <strong>Audience:</strong> General Australian road-trip travellers, including night drivers, families, accessible travellers and caravan users.<br>
+      <strong>Data sources:</strong> National Public Toilet Map; Tourism Research Australia Domestic Tourism Statistics; Australian tourism region reference data.<br>
+      <strong>Derived measures:</strong> Trips per toilet, relative toilet supply per million trips, traveller persona support scores, and road-trip readiness score.<br>
+      <strong>Tools:</strong> RStudio for data cleaning; Vega-Lite, HTML and CSS for visualisation design.<br>
+      <strong>Date accessed / prepared:</strong> May 2026.
+    </footer>
 
   </main>
 
   <script>
-  vegaEmbed("#chart0", "js/chart0_kpi_intro.json", {
-    actions: false
-  }).catch(console.error);
+    vegaEmbed("#chart1", "js/chart1_bump.json", {
+      actions: false
+    }).catch(console.error);
 
-  vegaEmbed("#chart1", "js/chart1_bump.json", {
-    actions: false
-  }).catch(console.error);
+    vegaEmbed("#chart2", "js/chart2_tourism_heatmap.json", {
+      actions: false
+    }).catch(console.error);
 
-  vegaEmbed("#chart2", "js/chart2_tourism_heatmap.json", {
-    actions: false
-  }).catch(console.error);
+    vegaEmbed("#chart3", "js/chart3_toilet_density_binmap.json", {
+      actions: false
+    }).catch(console.error);
 
-  vegaEmbed("#chart3", "js/chart3_toilet_density_binmap.json", {
-    actions: false
-  }).catch(console.error);
+    vegaEmbed("#chart4", "js/chart4_traveller_need_maps.json", {
+      actions: false
+    }).catch(console.error);
 
-  vegaEmbed("#chart4", "js/chart4_traveller_need_maps.json", {
-    actions: false
-  }).catch(console.error);
+    vegaEmbed("#chart5", "js/chart5_demand_supply_quadrant.json", {
+      actions: false
+    }).catch(console.error);
 
-  vegaEmbed("#chart5", "js/chart5_demand_supply_quadrant.json", {
-    actions: false
-  }).catch(console.error);
+    vegaEmbed("#chart6", "js/chart6_rank_dumbbell.json", {
+      actions: false
+    }).catch(console.error);
 
-  vegaEmbed("#chart6", "js/chart6_rank_dumbbell.json", {
-    actions: false
-  }).catch(console.error);
+    vegaEmbed("#chart7", "js/chart7_facility_need_matrix.json", {
+      actions: false
+    }).catch(console.error);
 
-  vegaEmbed("#chart7", "js/chart7_facility_need_matrix.json", {
-    actions: false
-  }).catch(console.error);
+    vegaEmbed("#chart8", "js/chart8_persona_glyph_matrix.json", {
+      actions: false
+    }).catch(console.error);
 
-  vegaEmbed("#chart8", "js/chart8_persona_glyph_matrix.json", {
-    actions: false
-  }).catch(console.error);
+    vegaEmbed("#chart9", "js/chart9_readiness_components.json", {
+      actions: false
+    }).catch(console.error);
 
-  vegaEmbed("#chart9", "js/chart9_readiness_components.json", {
-    actions: false
-  }).catch(console.error);
-
-  vegaEmbed("#chart10", "js/chart10_action_priority_matrix.json", {
-    actions: false
-  }).catch(console.error);
-</script>
-
-
+    vegaEmbed("#chart10", "js/chart10_action_priority_matrix.json", {
+      actions: false
+    }).catch(console.error);
+  </script>
 
 </body>
 

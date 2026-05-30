@@ -1,452 +1,162 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Compound matrix showing how well each state's public toilet network supports different road-trip traveller personas, with NA categories removed and softer summary bars.",
+  "description": "Feature importance bar chart showing the weighted importance of five traveller-support features in the road-trip readiness score.",
   "title": {
-    "text": "Night drivers are better supported than families and caravan travellers",
-    "subtitle": "Colour and percentage labels show support scores; circle size is kept subtle to reduce visual overload.",
+    "text": "Which features matter most for road-trip readiness?",
+    "subtitle": "Bars show the weight assigned to each feature in the custom readiness score.",
     "anchor": "start",
     "fontSize": 20,
     "subtitleFontSize": 13
   },
+  "width": 420,
+  "height": 330,
   "data": {
-    "url": "data_clean/persona_support.csv"
+    "url": "data_clean/readiness_components_long.csv"
   },
   "transform": [
     {
       "filter": "datum.State != null && datum.State != '' && datum.State != 'NA'"
     },
     {
-      "filter": "datum.Persona != null && datum.Persona != '' && datum.Persona != 'NA'"
+      "calculate": "datum.Component == 'Accessible' ? 'Accessible access' : datum.Component == '24-hour' ? '24-hour access' : datum.Component == 'Parking' ? 'Parking' : datum.Component == 'Baby change' ? 'Baby-change facilities' : datum.Component == 'Shower' ? 'Showers' : datum.Component",
+      "as": "Component_Clean"
     },
     {
-      "calculate": "datum.Support_Score * 100",
-      "as": "Support_Percent"
-    },
-    {
-      "calculate": "format(datum.Support_Percent, '.0f') + '%'",
-      "as": "Support_Label"
-    }
-  ],
-  "vconcat": [
-    {
-      "width": 620,
-      "height": 70,
-      "transform": [
+      "aggregate": [
         {
-          "aggregate": [
-            {
-              "op": "mean",
-              "field": "Support_Score",
-              "as": "Average_State_Support"
-            }
-          ],
-          "groupby": [
-            "State"
-          ]
+          "op": "max",
+          "field": "Weight",
+          "as": "Feature_Weight"
         },
         {
-          "calculate": "format(datum.Average_State_Support * 100, '.0f') + '%'",
-          "as": "Average_State_Label"
+          "op": "mean",
+          "field": "Rate",
+          "as": "Average_Availability"
         }
       ],
-      "layer": [
-        {
-          "mark": {
-            "type": "bar",
-            "cornerRadiusEnd": 3,
-            "color": "#c9a987",
-            "opacity": 0.55
+      "groupby": [
+        "Component_Clean"
+      ]
+    },
+    {
+      "calculate": "datum.Feature_Weight * 100",
+      "as": "Weight_Percent"
+    },
+    {
+      "calculate": "datum.Average_Availability * 100",
+      "as": "Average_Availability_Percent"
+    },
+    {
+      "calculate": "format(datum.Weight_Percent, '.0f') + '%'",
+      "as": "Weight_Label"
+    },
+    {
+      "calculate": "format(datum.Average_Availability_Percent, '.1f') + '%'",
+      "as": "Availability_Label"
+    }
+  ],
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "cornerRadiusEnd": 4,
+        "height": {
+          "band": 0.58
+        }
+      },
+      "encoding": {
+        "y": {
+          "field": "Component_Clean",
+          "type": "nominal",
+          "title": null,
+          "sort": "-x",
+          "axis": {
+            "labelFontSize": 12
+          }
+        },
+        "x": {
+          "field": "Weight_Percent",
+          "type": "quantitative",
+          "title": "Feature weight in readiness score (%)",
+          "scale": {
+            "domain": [
+              0,
+              35
+            ]
           },
-          "encoding": {
-            "x": {
-              "field": "State",
-              "type": "nominal",
-              "sort": {
-                "op": "mean",
-                "field": "Average_State_Support",
-                "order": "descending"
-              },
-              "title": null,
-              "axis": {
-                "labelFontSize": 11,
-                "labelAngle": 0
-              }
-            },
-            "y": {
-              "field": "Average_State_Support",
-              "type": "quantitative",
-              "title": "Avg. support",
-              "scale": {
-                "domain": [
-                  0,
-                  1
-                ]
-              },
-              "axis": {
-                "format": "%",
-                "labelFontSize": 10,
-                "titleFontSize": 11
-              }
-            },
-            "tooltip": [
-              {
-                "field": "State",
-                "type": "nominal",
-                "title": "State"
-              },
-              {
-                "field": "Average_State_Support",
-                "type": "quantitative",
-                "title": "Average support",
-                "format": ".1%"
-              }
+          "axis": {
+            "labelFontSize": 11,
+            "titleFontSize": 12,
+            "grid": true
+          }
+        },
+        "color": {
+          "field": "Component_Clean",
+          "type": "nominal",
+          "legend": null,
+          "scale": {
+            "domain": [
+              "Accessible access",
+              "24-hour access",
+              "Parking",
+              "Baby-change facilities",
+              "Showers"
+            ],
+            "range": [
+              "#4f6f7f",
+              "#6b4f3f",
+              "#b77945",
+              "#d9a65f",
+              "#5f7f58"
             ]
           }
         },
-        {
-          "mark": {
-            "type": "text",
-            "dy": -6,
-            "fontSize": 9,
-            "fontWeight": "bold",
-            "color": "#6b5a4a",
-            "opacity": 0.85
+        "tooltip": [
+          {
+            "field": "Component_Clean",
+            "type": "nominal",
+            "title": "Feature"
           },
-          "encoding": {
-            "x": {
-              "field": "State",
-              "type": "nominal",
-              "sort": {
-                "op": "mean",
-                "field": "Average_State_Support",
-                "order": "descending"
-              }
-            },
-            "y": {
-              "field": "Average_State_Support",
-              "type": "quantitative"
-            },
-            "text": {
-              "field": "Average_State_Label",
-              "type": "nominal"
-            }
+          {
+            "field": "Weight_Label",
+            "type": "nominal",
+            "title": "Readiness score weight"
+          },
+          {
+            "field": "Availability_Label",
+            "type": "nominal",
+            "title": "Average availability across states"
           }
-        }
-      ]
+        ]
+      }
     },
     {
-      "width": 760,
-      "height": 35,
-      "layer": [
-        {
-          "mark": {
-            "type": "text",
-            "align": "left",
-            "baseline": "middle",
-            "fontSize": 13,
-            "fontWeight": "bold",
-            "color": "#7a5d45"
-          },
-          "encoding": {
-            "x": {
-              "value": 0
-            },
-            "y": {
-              "value": 18
-            },
-            "text": {
-              "value": "Night drivers are generally better supported than caravan travellers."
-            }
-          }
-        }
-      ]
-    },
-    {
-      "hconcat": [
-        {
-          "width": 620,
-          "height": 285,
-          "layer": [
-            {
-              "mark": {
-                "type": "rect",
-                "cornerRadius": 5,
-                "stroke": "white",
-                "strokeWidth": 1
-              },
-              "encoding": {
-                "x": {
-                  "field": "State",
-                  "type": "nominal",
-                  "sort": {
-                    "op": "mean",
-                    "field": "Support_Score",
-                    "order": "descending"
-                  },
-                  "title": "State",
-                  "axis": {
-                    "labelAngle": 0,
-                    "labelFontSize": 11,
-                    "titleFontSize": 12
-                  }
-                },
-                "y": {
-                  "field": "Persona",
-                  "type": "nominal",
-                  "sort": [
-                    "Night driver",
-                    "Family traveller",
-                    "Accessible traveller",
-                    "Caravan traveller"
-                  ],
-                  "title": "Traveller persona",
-                  "axis": {
-                    "labelFontSize": 11,
-                    "titleFontSize": 12
-                  }
-                },
-                "color": {
-                  "field": "Support_Score",
-                  "type": "quantitative",
-                  "title": "Support score",
-                  "scale": {
-                    "scheme": "oranges",
-                    "domain": [
-                      0,
-                      1
-                    ]
-                  },
-                  "legend": {
-                    "orient": "right",
-                    "format": "%"
-                  }
-                },
-                "tooltip": [
-                  {
-                    "field": "State",
-                    "type": "nominal",
-                    "title": "State"
-                  },
-                  {
-                    "field": "Persona",
-                    "type": "nominal",
-                    "title": "Traveller persona"
-                  },
-                  {
-                    "field": "Support_Score",
-                    "type": "quantitative",
-                    "title": "Support score",
-                    "format": ".1%"
-                  },
-                  {
-                    "field": "Support_Level",
-                    "type": "nominal",
-                    "title": "Support level"
-                  }
-                ]
-              }
-            },
-            {
-              "mark": {
-                "type": "circle",
-                "stroke": "white",
-                "strokeWidth": 0.8,
-                "opacity": 0.32,
-                "color": "#2b2118"
-              },
-              "encoding": {
-                "x": {
-                  "field": "State",
-                  "type": "nominal",
-                  "sort": {
-                    "op": "mean",
-                    "field": "Support_Score",
-                    "order": "descending"
-                  }
-                },
-                "y": {
-                  "field": "Persona",
-                  "type": "nominal",
-                  "sort": [
-                    "Night driver",
-                    "Family traveller",
-                    "Accessible traveller",
-                    "Caravan traveller"
-                  ]
-                },
-                "size": {
-                  "field": "Support_Score",
-                  "type": "quantitative",
-                  "scale": {
-                    "range": [
-                      60,
-                      260
-                    ],
-                    "domain": [
-                      0,
-                      1
-                    ]
-                  },
-                  "legend": null
-                }
-              }
-            },
-            {
-              "mark": {
-                "type": "text",
-                "fontSize": 10,
-                "fontWeight": "bold",
-                "color": "#2b2118"
-              },
-              "encoding": {
-                "x": {
-                  "field": "State",
-                  "type": "nominal",
-                  "sort": {
-                    "op": "mean",
-                    "field": "Support_Score",
-                    "order": "descending"
-                  }
-                },
-                "y": {
-                  "field": "Persona",
-                  "type": "nominal",
-                  "sort": [
-                    "Night driver",
-                    "Family traveller",
-                    "Accessible traveller",
-                    "Caravan traveller"
-                  ]
-                },
-                "text": {
-                  "field": "Support_Label",
-                  "type": "nominal"
-                }
-              }
-            }
-          ]
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 6,
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#102a3d"
+      },
+      "encoding": {
+        "y": {
+          "field": "Component_Clean",
+          "type": "nominal",
+          "sort": "-x"
         },
-        {
-          "width": 150,
-          "height": 285,
-          "transform": [
-            {
-              "aggregate": [
-                {
-                  "op": "mean",
-                  "field": "Support_Score",
-                  "as": "Average_Persona_Support"
-                }
-              ],
-              "groupby": [
-                "Persona"
-              ]
-            },
-            {
-              "calculate": "format(datum.Average_Persona_Support * 100, '.0f') + '%'",
-              "as": "Average_Persona_Label"
-            }
-          ],
-          "layer": [
-            {
-              "mark": {
-                "type": "bar",
-                "cornerRadiusEnd": 3,
-                "color": "#8fb1bd",
-                "opacity": 0.5
-              },
-              "encoding": {
-                "y": {
-                  "field": "Persona",
-                  "type": "nominal",
-                  "sort": [
-                    "Night driver",
-                    "Family traveller",
-                    "Accessible traveller",
-                    "Caravan traveller"
-                  ],
-                  "title": null,
-                  "axis": {
-                    "labels": false,
-                    "ticks": false,
-                    "domain": false
-                  }
-                },
-                "x": {
-                  "field": "Average_Persona_Support",
-                  "type": "quantitative",
-                  "title": "Persona avg.",
-                  "scale": {
-                    "domain": [
-                      0,
-                      1
-                    ]
-                  },
-                  "axis": {
-                    "format": "%",
-                    "labelFontSize": 10,
-                    "titleFontSize": 11,
-                    "grid": true
-                  }
-                },
-                "tooltip": [
-                  {
-                    "field": "Persona",
-                    "type": "nominal",
-                    "title": "Traveller persona"
-                  },
-                  {
-                    "field": "Average_Persona_Support",
-                    "type": "quantitative",
-                    "title": "Average support",
-                    "format": ".1%"
-                  }
-                ]
-              }
-            },
-            {
-              "mark": {
-                "type": "text",
-                "align": "left",
-                "baseline": "middle",
-                "dx": 5,
-                "fontSize": 10,
-                "fontWeight": "bold",
-                "color": "#4f5f65",
-                "opacity": 0.9
-              },
-              "encoding": {
-                "y": {
-                  "field": "Persona",
-                  "type": "nominal",
-                  "sort": [
-                    "Night driver",
-                    "Family traveller",
-                    "Accessible traveller",
-                    "Caravan traveller"
-                  ]
-                },
-                "x": {
-                  "field": "Average_Persona_Support",
-                  "type": "quantitative"
-                },
-                "text": {
-                  "field": "Average_Persona_Label",
-                  "type": "nominal"
-                }
-              }
-            }
-          ]
+        "x": {
+          "field": "Weight_Percent",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "Weight_Label",
+          "type": "nominal"
         }
-      ]
+      }
     }
   ],
-  "resolve": {
-    "scale": {
-      "color": "independent",
-      "size": "independent"
-    }
-  },
   "config": {
     "view": {
       "stroke": null
@@ -455,10 +165,6 @@
     "axis": {
       "domain": false,
       "tickColor": "#cccccc"
-    },
-    "legend": {
-      "labelFontSize": 11,
-      "titleFontSize": 12
     }
   }
 }

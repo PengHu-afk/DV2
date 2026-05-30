@@ -8,7 +8,7 @@
     "fontSize": 20,
     "subtitleFontSize": 13
   },
-  "width": 760,
+  "width": 880,
   "height": 420,
   "data": {
     "url": "data_clean/tourism_rank_long.csv"
@@ -86,8 +86,8 @@
       "mark": {
         "type": "line",
         "interpolate": "monotone",
-        "strokeWidth": 3,
-        "opacity": 0.85
+        "strokeWidth": 3.2,
+        "opacity": 0.82
       },
       "encoding": {
         "x": {
@@ -118,9 +118,28 @@
         "color": {
           "field": "State",
           "type": "nominal",
-          "legend": {
-            "orient": "right",
-            "title": "State"
+          "legend": null,
+          "scale": {
+            "domain": [
+              "Australian Capital Territory",
+              "New South Wales",
+              "Northern Territory",
+              "Queensland",
+              "South Australia",
+              "Tasmania",
+              "Victoria",
+              "Western Australia"
+            ],
+            "range": [
+              "#e0c24d",
+              "#ef8a2f",
+              "#e46a6a",
+              "#7db8b6",
+              "#72a96d",
+              "#d2b75e",
+              "#b68fb2",
+              "#f3a4a8"
+            ]
           }
         },
         "detail": {
@@ -153,7 +172,8 @@
         "filled": true,
         "size": 95,
         "stroke": "white",
-        "strokeWidth": 1.2
+        "strokeWidth": 1.2,
+        "opacity": 0.9
       },
       "encoding": {
         "x": {
@@ -168,7 +188,29 @@
         "color": {
           "field": "State",
           "type": "nominal",
-          "legend": null
+          "legend": null,
+          "scale": {
+            "domain": [
+              "Australian Capital Territory",
+              "New South Wales",
+              "Northern Territory",
+              "Queensland",
+              "South Australia",
+              "Tasmania",
+              "Victoria",
+              "Western Australia"
+            ],
+            "range": [
+              "#e0c24d",
+              "#ef8a2f",
+              "#e46a6a",
+              "#7db8b6",
+              "#72a96d",
+              "#d2b75e",
+              "#b68fb2",
+              "#f3a4a8"
+            ]
+          }
         },
         "tooltip": [
           {
@@ -220,7 +262,29 @@
         "color": {
           "field": "State",
           "type": "nominal",
-          "legend": null
+          "legend": null,
+          "scale": {
+            "domain": [
+              "Australian Capital Territory",
+              "New South Wales",
+              "Northern Territory",
+              "Queensland",
+              "South Australia",
+              "Tasmania",
+              "Victoria",
+              "Western Australia"
+            ],
+            "range": [
+              "#e0c24d",
+              "#ef8a2f",
+              "#e46a6a",
+              "#7db8b6",
+              "#72a96d",
+              "#d2b75e",
+              "#b68fb2",
+              "#f3a4a8"
+            ]
+          }
         }
       }
     }
@@ -233,10 +297,6 @@
     "axis": {
       "domain": false,
       "tickColor": "#cccccc"
-    },
-    "legend": {
-      "labelFontSize": 11,
-      "titleFontSize": 12
     }
   }
 }
