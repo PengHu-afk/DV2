@@ -1,9 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Stacked component chart showing how the road-trip readiness score is built from accessibility, 24-hour access, parking, baby change and shower availability.",
+  "description": "Stacked component chart showing how the road-trip readiness score is built from weighted facility-support features.",
   "title": {
     "text": "What makes a state road-trip ready?",
-    "subtitle": "The score combines accessible toilets, 24-hour access, parking, baby-change facilities and showers.",
+    "subtitle": "States are sorted from highest to lowest total readiness score. The black dot marks the final weighted score.",
     "anchor": "start",
     "fontSize": 20,
     "subtitleFontSize": 13
@@ -14,6 +14,16 @@
     "url": "data_clean/readiness_components_long.csv"
   },
   "transform": [
+    {
+      "filter": "datum.State != null && datum.State != '' && datum.State != 'NA'"
+    },
+    {
+      "filter": "datum.State_Full != null && datum.State_Full != '' && datum.State_Full != 'NA'"
+    },
+    {
+      "calculate": "datum.Component == 'Accessible' ? 'Accessible access' : datum.Component == '24-hour' ? '24-hour access' : datum.Component == 'Parking' ? 'Parking' : datum.Component == 'Baby change' ? 'Baby-change facilities' : datum.Component == 'Shower' ? 'Showers' : datum.Component",
+      "as": "Component_Clean"
+    },
     {
       "calculate": "datum.Weighted_Value * 100",
       "as": "Weighted_Percent"
@@ -37,6 +47,10 @@
     {
       "calculate": "format(datum.Rate_Percent, '.1f') + '%'",
       "as": "Rate_Label"
+    },
+    {
+      "calculate": "format(datum.Weight, '.0%')",
+      "as": "Weight_Label"
     },
     {
       "joinaggregate": [
@@ -73,7 +87,7 @@
         "x": {
           "field": "Weighted_Percent",
           "type": "quantitative",
-          "title": "Contribution to readiness score (percentage points)",
+          "title": "Weighted contribution to readiness score (percentage points)",
           "stack": "zero",
           "axis": {
             "labelFontSize": 11,
@@ -82,24 +96,24 @@
           }
         },
         "color": {
-          "field": "Component",
+          "field": "Component_Clean",
           "type": "nominal",
-          "title": "Score component",
+          "title": "Score component and weight",
           "sort": {
             "field": "Component_Order",
             "order": "ascending"
           },
           "scale": {
             "domain": [
-              "Accessible",
-              "24-hour",
+              "Accessible access",
+              "24-hour access",
               "Parking",
-              "Baby change",
-              "Shower"
+              "Baby-change facilities",
+              "Showers"
             ],
             "range": [
               "#4f6f7f",
-              "#8b5e3c",
+              "#6b4f3f",
               "#b77945",
               "#d9a65f",
               "#5f7f58"
@@ -107,7 +121,8 @@
           },
           "legend": {
             "orient": "top",
-            "direction": "horizontal"
+            "direction": "horizontal",
+            "labelExpr": "datum.label == 'Accessible access' ? 'Accessible access, 30%' : datum.label == '24-hour access' ? '24-hour access, 25%' : datum.label == 'Parking' ? 'Parking, 20%' : datum.label == 'Baby-change facilities' ? 'Baby change, 15%' : datum.label == 'Showers' ? 'Showers, 10%' : datum.label"
           }
         },
         "order": {
@@ -121,7 +136,7 @@
             "title": "State"
           },
           {
-            "field": "Component",
+            "field": "Component_Clean",
             "type": "nominal",
             "title": "Component"
           },
@@ -131,10 +146,9 @@
             "title": "Original facility rate"
           },
           {
-            "field": "Weight",
-            "type": "quantitative",
-            "title": "Index weight",
-            "format": ".0%"
+            "field": "Weight_Label",
+            "type": "nominal",
+            "title": "Index weight"
           },
           {
             "field": "Weighted_Label",

@@ -1,9 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Compound heatmap showing how different public toilet facility types support road-trip traveller needs, with marginal bars for average availability and total facility count.",
+  "description": "Compound heatmap showing how cleaned facility types support road-trip traveller needs, with duplicate categories merged and labels only shown for high-value cells.",
   "title": {
     "text": "Which facility types actually support road-trip needs?",
-    "subtitle": "Heatmap cells show the share of toilets in each facility type that provide each traveller-support feature.",
+    "subtitle": "Duplicate facility names are merged, and labels highlight only strong support cells above 60%.",
     "anchor": "start",
     "fontSize": 20,
     "subtitleFontSize": 13
@@ -11,21 +11,99 @@
   "data": {
     "url": "data_clean/facility_need_matrix.csv"
   },
+  "transform": [
+    {
+      "calculate": "lower(trim(datum.FacilityType)) == 'park or reserve' ? 'Park or reserve' : datum.FacilityType",
+      "as": "FacilityType_Clean"
+    },
+    {
+      "calculate": "datum.Traveller_Need == 'Baby_Change' ? 'Baby change' : datum.Traveller_Need == 'Dump_Point' ? 'Dump point' : datum.Traveller_Need == 'Drinking_Water' ? 'Drinking water' : datum.Traveller_Need == 'TwentyFour_Hour' ? '24-hour access' : datum.Traveller_Need",
+      "as": "Traveller_Need_Clean"
+    },
+    {
+      "calculate": "datum.Availability_Rate * datum.Total_Count",
+      "as": "Available_Estimate"
+    },
+    {
+      "aggregate": [
+        {
+          "op": "sum",
+          "field": "Available_Estimate",
+          "as": "Available_Total"
+        },
+        {
+          "op": "sum",
+          "field": "Total_Count",
+          "as": "Total_Count_Clean"
+        }
+      ],
+      "groupby": [
+        "FacilityType_Clean",
+        "Traveller_Need_Clean"
+      ]
+    },
+    {
+      "calculate": "datum.Available_Total / datum.Total_Count_Clean",
+      "as": "Availability_Rate_Clean"
+    },
+    {
+      "filter": "datum.Total_Count_Clean >= 30"
+    },
+    {
+      "calculate": "datum.Availability_Rate_Clean >= 0.6 ? format(datum.Availability_Rate_Clean, '.0%') : ''",
+      "as": "Important_Label"
+    },
+    {
+      "calculate": "format(datum.Availability_Rate_Clean, '.1%')",
+      "as": "Availability_Tooltip_Label"
+    }
+  ],
   "vconcat": [
     {
+      "width": 760,
+      "height": 35,
+      "data": {
+        "values": [
+          {
+            "note": "Rest areas and camping grounds provide stronger road-trip support than many general facility types."
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "fontSize": 13,
+        "fontWeight": "bold",
+        "color": "#7a5d45"
+      },
+      "encoding": {
+        "x": {
+          "value": 0
+        },
+        "y": {
+          "value": 18
+        },
+        "text": {
+          "field": "note",
+          "type": "nominal"
+        }
+      }
+    },
+    {
       "width": 610,
-      "height": 85,
+      "height": 80,
       "transform": [
         {
           "aggregate": [
             {
               "op": "mean",
-              "field": "Availability_Rate",
+              "field": "Availability_Rate_Clean",
               "as": "Average_Availability"
             }
           ],
           "groupby": [
-            "Traveller_Need"
+            "Traveller_Need_Clean"
           ]
         },
         {
@@ -42,16 +120,16 @@
           },
           "encoding": {
             "x": {
-              "field": "Traveller_Need",
+              "field": "Traveller_Need_Clean",
               "type": "nominal",
               "sort": [
                 "Accessible",
-                "Baby_Change",
+                "Baby change",
                 "Parking",
                 "Shower",
-                "Dump_Point",
-                "Drinking_Water",
-                "TwentyFour_Hour"
+                "Dump point",
+                "Drinking water",
+                "24-hour access"
               ],
               "title": null,
               "axis": {
@@ -63,6 +141,12 @@
               "field": "Average_Availability",
               "type": "quantitative",
               "title": "Average availability",
+              "scale": {
+                "domain": [
+                  0,
+                  1
+                ]
+              },
               "axis": {
                 "format": "%",
                 "labelFontSize": 10,
@@ -71,7 +155,7 @@
             },
             "tooltip": [
               {
-                "field": "Traveller_Need",
+                "field": "Traveller_Need_Clean",
                 "type": "nominal",
                 "title": "Traveller need"
               },
@@ -94,16 +178,16 @@
           },
           "encoding": {
             "x": {
-              "field": "Traveller_Need",
+              "field": "Traveller_Need_Clean",
               "type": "nominal",
               "sort": [
                 "Accessible",
-                "Baby_Change",
+                "Baby change",
                 "Parking",
                 "Shower",
-                "Dump_Point",
-                "Drinking_Water",
-                "TwentyFour_Hour"
+                "Dump point",
+                "Drinking water",
+                "24-hour access"
               ]
             },
             "y": {
@@ -122,13 +206,7 @@
       "hconcat": [
         {
           "width": 610,
-          "height": 420,
-          "transform": [
-            {
-              "calculate": "format(datum.Availability_Rate, '.0%')",
-              "as": "Availability_Label"
-            }
-          ],
+          "height": 390,
           "layer": [
             {
               "mark": {
@@ -138,16 +216,16 @@
               },
               "encoding": {
                 "x": {
-                  "field": "Traveller_Need",
+                  "field": "Traveller_Need_Clean",
                   "type": "nominal",
                   "sort": [
                     "Accessible",
-                    "Baby_Change",
+                    "Baby change",
                     "Parking",
                     "Shower",
-                    "Dump_Point",
-                    "Drinking_Water",
-                    "TwentyFour_Hour"
+                    "Dump point",
+                    "Drinking water",
+                    "24-hour access"
                   ],
                   "title": "Traveller need",
                   "axis": {
@@ -157,11 +235,11 @@
                   }
                 },
                 "y": {
-                  "field": "FacilityType",
+                  "field": "FacilityType_Clean",
                   "type": "nominal",
                   "sort": {
                     "op": "max",
-                    "field": "Total_Count",
+                    "field": "Total_Count_Clean",
                     "order": "descending"
                   },
                   "title": "Facility type",
@@ -171,12 +249,15 @@
                   }
                 },
                 "color": {
-                  "field": "Availability_Rate",
+                  "field": "Availability_Rate_Clean",
                   "type": "quantitative",
                   "title": "Availability rate",
                   "scale": {
                     "scheme": "oranges",
-                    "domain": [0, 1]
+                    "domain": [
+                      0,
+                      1
+                    ]
                   },
                   "legend": {
                     "orient": "right",
@@ -185,23 +266,22 @@
                 },
                 "tooltip": [
                   {
-                    "field": "FacilityType",
+                    "field": "FacilityType_Clean",
                     "type": "nominal",
                     "title": "Facility type"
                   },
                   {
-                    "field": "Traveller_Need",
+                    "field": "Traveller_Need_Clean",
                     "type": "nominal",
                     "title": "Traveller need"
                   },
                   {
-                    "field": "Availability_Rate",
-                    "type": "quantitative",
-                    "title": "Availability rate",
-                    "format": ".1%"
+                    "field": "Availability_Tooltip_Label",
+                    "type": "nominal",
+                    "title": "Availability rate"
                   },
                   {
-                    "field": "Total_Count",
+                    "field": "Total_Count_Clean",
                     "type": "quantitative",
                     "title": "Number of toilets in this type",
                     "format": ","
@@ -218,29 +298,29 @@
               },
               "encoding": {
                 "x": {
-                  "field": "Traveller_Need",
+                  "field": "Traveller_Need_Clean",
                   "type": "nominal",
                   "sort": [
                     "Accessible",
-                    "Baby_Change",
+                    "Baby change",
                     "Parking",
                     "Shower",
-                    "Dump_Point",
-                    "Drinking_Water",
-                    "TwentyFour_Hour"
+                    "Dump point",
+                    "Drinking water",
+                    "24-hour access"
                   ]
                 },
                 "y": {
-                  "field": "FacilityType",
+                  "field": "FacilityType_Clean",
                   "type": "nominal",
                   "sort": {
                     "op": "max",
-                    "field": "Total_Count",
+                    "field": "Total_Count_Clean",
                     "order": "descending"
                   }
                 },
                 "text": {
-                  "field": "Availability_Label",
+                  "field": "Important_Label",
                   "type": "nominal"
                 }
               }
@@ -249,18 +329,18 @@
         },
         {
           "width": 145,
-          "height": 420,
+          "height": 390,
           "transform": [
             {
               "aggregate": [
                 {
                   "op": "max",
-                  "field": "Total_Count",
+                  "field": "Total_Count_Clean",
                   "as": "Facility_Count"
                 }
               ],
               "groupby": [
-                "FacilityType"
+                "FacilityType_Clean"
               ]
             }
           ],
@@ -273,7 +353,7 @@
               },
               "encoding": {
                 "y": {
-                  "field": "FacilityType",
+                  "field": "FacilityType_Clean",
                   "type": "nominal",
                   "sort": {
                     "op": "max",
@@ -291,6 +371,9 @@
                   "field": "Facility_Count",
                   "type": "quantitative",
                   "title": "Total count",
+                  "scale": {
+                    "type": "sqrt"
+                  },
                   "axis": {
                     "labelFontSize": 10,
                     "titleFontSize": 11,
@@ -299,7 +382,7 @@
                 },
                 "tooltip": [
                   {
-                    "field": "FacilityType",
+                    "field": "FacilityType_Clean",
                     "type": "nominal",
                     "title": "Facility type"
                   },
@@ -323,7 +406,7 @@
               },
               "encoding": {
                 "y": {
-                  "field": "FacilityType",
+                  "field": "FacilityType_Clean",
                   "type": "nominal",
                   "sort": {
                     "op": "max",
@@ -333,7 +416,10 @@
                 },
                 "x": {
                   "field": "Facility_Count",
-                  "type": "quantitative"
+                  "type": "quantitative",
+                  "scale": {
+                    "type": "sqrt"
+                  }
                 },
                 "text": {
                   "field": "Facility_Count",

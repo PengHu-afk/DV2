@@ -1,9 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Compound glyph matrix showing how well each state's public toilet network supports different road-trip traveller personas.",
+  "description": "Compound matrix showing how well each state's public toilet network supports different road-trip traveller personas, with NA categories removed and softer summary bars.",
   "title": {
-    "text": "The same toilet network works differently for different travellers",
-    "subtitle": "Circle size and colour show support score for each traveller persona in each state.",
+    "text": "Night drivers are better supported than families and caravan travellers",
+    "subtitle": "Colour and percentage labels show support scores; circle size is kept subtle to reduce visual overload.",
     "anchor": "start",
     "fontSize": 20,
     "subtitleFontSize": 13
@@ -12,6 +12,12 @@
     "url": "data_clean/persona_support.csv"
   },
   "transform": [
+    {
+      "filter": "datum.State != null && datum.State != '' && datum.State != 'NA'"
+    },
+    {
+      "filter": "datum.Persona != null && datum.Persona != '' && datum.Persona != 'NA'"
+    },
     {
       "calculate": "datum.Support_Score * 100",
       "as": "Support_Percent"
@@ -24,7 +30,7 @@
   "vconcat": [
     {
       "width": 620,
-      "height": 85,
+      "height": 70,
       "transform": [
         {
           "aggregate": [
@@ -48,7 +54,8 @@
           "mark": {
             "type": "bar",
             "cornerRadiusEnd": 3,
-            "color": "#8b5e3c"
+            "color": "#c9a987",
+            "opacity": 0.55
           },
           "encoding": {
             "x": {
@@ -68,9 +75,12 @@
             "y": {
               "field": "Average_State_Support",
               "type": "quantitative",
-              "title": "Average support",
+              "title": "Avg. support",
               "scale": {
-                "domain": [0, 1]
+                "domain": [
+                  0,
+                  1
+                ]
               },
               "axis": {
                 "format": "%",
@@ -96,10 +106,11 @@
         {
           "mark": {
             "type": "text",
-            "dy": -7,
-            "fontSize": 10,
+            "dy": -6,
+            "fontSize": 9,
             "fontWeight": "bold",
-            "color": "#4a3a2d"
+            "color": "#6b5a4a",
+            "opacity": 0.85
           },
           "encoding": {
             "x": {
@@ -118,6 +129,33 @@
             "text": {
               "field": "Average_State_Label",
               "type": "nominal"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "width": 760,
+      "height": 35,
+      "layer": [
+        {
+          "mark": {
+            "type": "text",
+            "align": "left",
+            "baseline": "middle",
+            "fontSize": 13,
+            "fontWeight": "bold",
+            "color": "#7a5d45"
+          },
+          "encoding": {
+            "x": {
+              "value": 0
+            },
+            "y": {
+              "value": 18
+            },
+            "text": {
+              "value": "Night drivers are generally better supported than caravan travellers."
             }
           }
         }
@@ -173,7 +211,10 @@
                   "title": "Support score",
                   "scale": {
                     "scheme": "oranges",
-                    "domain": [0, 1]
+                    "domain": [
+                      0,
+                      1
+                    ]
                   },
                   "legend": {
                     "orient": "right",
@@ -209,8 +250,9 @@
               "mark": {
                 "type": "circle",
                 "stroke": "white",
-                "strokeWidth": 1.2,
-                "opacity": 0.9
+                "strokeWidth": 0.8,
+                "opacity": 0.32,
+                "color": "#2b2118"
               },
               "encoding": {
                 "x": {
@@ -235,45 +277,18 @@
                 "size": {
                   "field": "Support_Score",
                   "type": "quantitative",
-                  "title": "Support score",
                   "scale": {
-                    "range": [80, 900],
-                    "domain": [0, 1]
+                    "range": [
+                      60,
+                      260
+                    ],
+                    "domain": [
+                      0,
+                      1
+                    ]
                   },
                   "legend": null
-                },
-                "color": {
-                  "field": "Support_Score",
-                  "type": "quantitative",
-                  "legend": null,
-                  "scale": {
-                    "scheme": "oranges",
-                    "domain": [0, 1]
-                  }
-                },
-                "tooltip": [
-                  {
-                    "field": "State",
-                    "type": "nominal",
-                    "title": "State"
-                  },
-                  {
-                    "field": "Persona",
-                    "type": "nominal",
-                    "title": "Traveller persona"
-                  },
-                  {
-                    "field": "Support_Score",
-                    "type": "quantitative",
-                    "title": "Support score",
-                    "format": ".1%"
-                  },
-                  {
-                    "field": "Support_Level",
-                    "type": "nominal",
-                    "title": "Support level"
-                  }
-                ]
+                }
               }
             },
             {
@@ -281,7 +296,7 @@
                 "type": "text",
                 "fontSize": 10,
                 "fontWeight": "bold",
-                "color": "#3f3328"
+                "color": "#2b2118"
               },
               "encoding": {
                 "x": {
@@ -337,7 +352,8 @@
               "mark": {
                 "type": "bar",
                 "cornerRadiusEnd": 3,
-                "color": "#4f6f7f"
+                "color": "#8fb1bd",
+                "opacity": 0.5
               },
               "encoding": {
                 "y": {
@@ -361,7 +377,10 @@
                   "type": "quantitative",
                   "title": "Persona avg.",
                   "scale": {
-                    "domain": [0, 1]
+                    "domain": [
+                      0,
+                      1
+                    ]
                   },
                   "axis": {
                     "format": "%",
@@ -393,7 +412,8 @@
                 "dx": 5,
                 "fontSize": 10,
                 "fontWeight": "bold",
-                "color": "#2f2f2f"
+                "color": "#4f5f65",
+                "opacity": 0.9
               },
               "encoding": {
                 "y": {

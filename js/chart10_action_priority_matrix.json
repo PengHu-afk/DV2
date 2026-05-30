@@ -1,9 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Decision matrix showing where public toilet access improvements should be prioritised based on travel pressure and road-trip readiness.",
+  "description": "Final action-priority quadrant chart using simplified priority categories, fixed point size, and a cautious data-supported conclusion.",
   "title": {
-    "text": "Where should public toilet improvements be prioritised?",
-    "subtitle": "The most important areas are where high travel pressure meets weaker toilet readiness.",
+    "text": "Improvements should target pressure points, not simply add toilets everywhere",
+    "subtitle": "The key issue is where travel pressure is high but traveller-support features are weaker.",
     "anchor": "start",
     "fontSize": 20,
     "subtitleFontSize": 13
@@ -15,7 +15,7 @@
   },
   "transform": [
     {
-      "filter": "isValid(datum.Trips_Per_Toilet) && isValid(datum.Roadtrip_Readiness_Score)"
+      "filter": "isValid(datum.Trips_Per_Toilet) && isValid(datum.Roadtrip_Readiness_Score) && datum.State != null && datum.State != '' && datum.State != 'NA'"
     },
     {
       "calculate": "datum.Roadtrip_Readiness_Score * 100",
@@ -36,6 +36,32 @@
     {
       "calculate": "format(datum.Trips_Million, '.1f') + 'M trips'",
       "as": "Trips_Label"
+    },
+    {
+      "joinaggregate": [
+        {
+          "op": "median",
+          "field": "Trips_Per_Toilet",
+          "as": "Median_Pressure"
+        },
+        {
+          "op": "median",
+          "field": "Readiness_Percent",
+          "as": "Median_Readiness"
+        }
+      ]
+    },
+    {
+      "calculate": "datum.Trips_Per_Toilet >= datum.Median_Pressure && datum.Readiness_Percent < datum.Median_Readiness ? 'Priority improvement area' : datum.Readiness_Percent < datum.Median_Readiness ? 'Improve specific facilities' : 'Maintain strong network'",
+      "as": "Simple_Priority"
+    },
+    {
+      "calculate": "datum.State == 'NSW' ? 12 : datum.State == 'VIC' ? 12 : datum.State == 'QLD' ? 12 : 8",
+      "as": "Label_DX"
+    },
+    {
+      "calculate": "datum.State == 'NSW' ? -12 : datum.State == 'VIC' ? 12 : datum.State == 'QLD' ? -10 : 0",
+      "as": "Label_DY"
     }
   ],
   "layer": [
@@ -51,13 +77,13 @@
       },
       "encoding": {
         "x": {
-          "value": 20
+          "value": 18
         },
         "y": {
-          "value": 22
+          "value": 20
         },
         "text": {
-          "value": "Lower pressure\nstronger readiness"
+          "value": "Low pressure,\nstrong readiness"
         }
       }
     },
@@ -76,10 +102,10 @@
           "value": 735
         },
         "y": {
-          "value": 22
+          "value": 20
         },
         "text": {
-          "value": "Busy but prepared"
+          "value": "Busy but\nrelatively prepared"
         }
       }
     },
@@ -101,7 +127,7 @@
           "value": 420
         },
         "text": {
-          "value": "Priority improvement area"
+          "value": "Higher priority\nif readiness is weak"
         }
       }
     },
@@ -117,13 +143,36 @@
       },
       "encoding": {
         "x": {
-          "value": 20
+          "value": 18
         },
         "y": {
           "value": 420
         },
         "text": {
-          "value": "Lower demand\npossible access gap"
+          "value": "Lower demand,\npossible facility gap"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#7a5d45",
+        "stroke": "white",
+        "strokeWidth": 4
+      },
+      "encoding": {
+        "x": {
+          "value": 330
+        },
+        "y": {
+          "value": 58
+        },
+        "text": {
+          "value": "No state forms a clear worst-case cluster.\nACT combines weaker readiness with moderate pressure,\nwhile NSW, VIC and QLD remain busy but relatively prepared."
         }
       }
     },
@@ -141,7 +190,10 @@
       ],
       "mark": {
         "type": "rule",
-        "strokeDash": [6, 5],
+        "strokeDash": [
+          6,
+          5
+        ],
         "strokeWidth": 1.3,
         "color": "#8a8178"
       },
@@ -166,7 +218,10 @@
       ],
       "mark": {
         "type": "rule",
-        "strokeDash": [6, 5],
+        "strokeDash": [
+          6,
+          5
+        ],
         "strokeWidth": 1.3,
         "color": "#8a8178"
       },
@@ -180,6 +235,7 @@
     {
       "mark": {
         "type": "circle",
+        "size": 260,
         "opacity": 0.86,
         "stroke": "white",
         "strokeWidth": 1.5
@@ -208,37 +264,20 @@
             "titleFontSize": 12
           }
         },
-        "size": {
-          "field": "Toilet_Count",
-          "type": "quantitative",
-          "title": "Public toilets",
-          "scale": {
-            "range": [150, 1100]
-          },
-          "legend": {
-            "orient": "right"
-          }
-        },
         "color": {
-          "field": "Priority_Category",
+          "field": "Simple_Priority",
           "type": "nominal",
           "title": "Priority category",
           "scale": {
             "domain": [
-              "High demand, weak readiness",
-              "Improve night access",
-              "Improve accessibility",
-              "Improve family support",
-              "Improve traveller facilities",
-              "Maintain strong network"
+              "Maintain strong network",
+              "Improve specific facilities",
+              "Priority improvement area"
             ],
             "range": [
-              "#b24a3b",
-              "#8b5e3c",
-              "#4f6f7f",
+              "#8a8178",
               "#d9a65f",
-              "#5f7f58",
-              "#8a8178"
+              "#b24a3b"
             ]
           },
           "legend": {
@@ -273,9 +312,14 @@
             "title": "Domestic trips"
           },
           {
+            "field": "Simple_Priority",
+            "type": "nominal",
+            "title": "Simplified priority"
+          },
+          {
             "field": "Priority_Category",
             "type": "nominal",
-            "title": "Suggested priority"
+            "title": "Original detailed priority"
           }
         ]
       }
@@ -285,7 +329,6 @@
         "type": "text",
         "align": "left",
         "baseline": "middle",
-        "dx": 8,
         "fontSize": 11,
         "fontWeight": "bold",
         "color": "#2f2f2f"
@@ -299,6 +342,12 @@
           "field": "Readiness_Percent",
           "type": "quantitative"
         },
+        "dx": {
+          "field": "Label_DX"
+        },
+        "dy": {
+          "field": "Label_DY"
+        },
         "text": {
           "field": "State",
           "type": "nominal"
@@ -310,9 +359,9 @@
             "title": "State"
           },
           {
-            "field": "Priority_Category",
+            "field": "Simple_Priority",
             "type": "nominal",
-            "title": "Suggested priority"
+            "title": "Simplified priority"
           }
         ]
       }
