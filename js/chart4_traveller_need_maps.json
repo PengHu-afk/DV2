@@ -1,9 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Small multiple maps showing public toilets that support different road-trip traveller needs, with direct annotations in each panel.",
+  "description": "Small multiple maps showing public toilets that support different road-trip traveller needs, arranged in a 2x2 grid with a consistent Australia base map.",
   "title": {
     "text": "Different road-trip needs create different toilet maps",
-    "subtitle": "Each panel now includes a short direct annotation to guide interpretation.",
+    "subtitle": "Each panel filters the toilet network by one traveller need and shows how support changes across Australia.",
     "anchor": "start",
     "fontSize": 20,
     "subtitleFontSize": 13
@@ -11,14 +11,6 @@
   "data": {
     "url": "data_clean/toilet_need_map_long.csv"
   },
-  "transform": [
-    {
-      "filter": "isValid(datum.Longitude) && isValid(datum.Latitude)"
-    },
-    {
-      "filter": "datum.Longitude >= 112 && datum.Longitude <= 154 && datum.Latitude >= -44 && datum.Latitude <= -10"
-    }
-  ],
   "facet": {
     "field": "Traveller_Need",
     "type": "nominal",
@@ -37,17 +29,39 @@
     }
   },
   "spec": {
-    "width": 360,
-    "height": 260,
+    "width": 300,
+    "height": 220,
     "projection": {
       "type": "mercator"
     },
     "layer": [
       {
+        "data": {
+          "url": "https://raw.githubusercontent.com/rowanhogan/australian-states/master/states.geojson",
+          "format": {
+            "type": "geojson"
+          }
+        },
+        "mark": {
+          "type": "geoshape",
+          "fill": "#f8f5f0",
+          "stroke": "#d9d2c8",
+          "strokeWidth": 0.8
+        }
+      },
+      {
+        "transform": [
+          {
+            "filter": "isValid(datum.Longitude) && isValid(datum.Latitude)"
+          },
+          {
+            "filter": "datum.Longitude >= 112 && datum.Longitude <= 154 && datum.Latitude >= -44 && datum.Latitude <= -10"
+          }
+        ],
         "mark": {
           "type": "circle",
-          "size": 9,
-          "opacity": 0.35
+          "size": 7,
+          "opacity": 0.22
         },
         "encoding": {
           "longitude": {
@@ -112,21 +126,24 @@
             "aggregate": [
               {
                 "op": "count",
-                "as": "n"
+                "field": "FacilityID",
+                "as": "Need_Count"
               }
             ],
-            "groupby": ["Traveller_Need"]
+            "groupby": [
+              "Traveller_Need"
+            ]
           },
           {
-            "calculate": "datum.Traveller_Need == '24-hour access' ? 'Night access clusters\\non major travel routes' : datum.Traveller_Need == 'Accessible access' ? 'Remote areas remain\\nvisibly sparse' : datum.Traveller_Need == 'Family support' ? 'Family-friendly stops\\ncluster near larger towns' : 'Caravan facilities are\\nmost fragmented'",
-            "as": "Panel_Note"
+            "calculate": "format(datum.Need_Count, ',') + ' toilets'",
+            "as": "Need_Count_Label"
           },
           {
-            "calculate": "113.2",
+            "calculate": "113.4",
             "as": "Note_Longitude"
           },
           {
-            "calculate": "-41.8",
+            "calculate": "-11.8",
             "as": "Note_Latitude"
           }
         ],
@@ -150,7 +167,7 @@
             "type": "quantitative"
           },
           "text": {
-            "field": "Panel_Note",
+            "field": "Need_Count_Label",
             "type": "nominal"
           }
         }

@@ -2,8 +2,8 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Line chart showing actual domestic travel demand by state across 2025 quarters.",
   "title": {
-    "text": "Domestic travel demand by state across 2025",
-    "subtitle": "The y-axis now shows actual travel volume rather than rank, making seasonal variation easier to see.",
+    "text": "Travel demand is concentrated in three states throughout 2025",
+    "subtitle": "Actual domestic travel volume by state, shown in million trips across 2025 quarters.",
     "anchor": "start",
     "fontSize": 20,
     "subtitleFontSize": 13
@@ -27,6 +27,61 @@
     }
   ],
   "layer": [
+    {
+      "data": {
+        "values": [
+          {
+            "y": 28
+          }
+        ]
+      },
+      "mark": {
+        "type": "rule",
+        "strokeDash": [6, 5],
+        "strokeWidth": 1.2,
+        "color": "#b8afa5"
+      },
+      "encoding": {
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "data": {
+        "values": [
+          {
+            "Quarter_Label": "Jun",
+            "y": 29.2,
+            "note": "NSW and Victoria remain consistently above 28M trips"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "bottom",
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#7a5d45"
+      },
+      "encoding": {
+        "x": {
+          "field": "Quarter_Label",
+          "type": "ordinal",
+          "sort": ["Mar", "Jun", "Sep", "Dec"]
+        },
+        "y": {
+          "field": "y",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "note",
+          "type": "nominal"
+        }
+      }
+    },
     {
       "mark": {
         "type": "line",
@@ -63,7 +118,10 @@
         "color": {
           "field": "State",
           "type": "nominal",
-          "legend": null
+          "legend": {
+            "orient": "right",
+            "title": "State"
+          }
         },
         "detail": {
           "field": "State",
@@ -134,7 +192,7 @@
     {
       "transform": [
         {
-          "filter": "datum.Quarter_Order == 4"
+          "filter": "datum.Quarter_Order == 4 && datum.Demand_Rank <= 4"
         }
       ],
       "mark": {
@@ -175,6 +233,10 @@
     "axis": {
       "domain": false,
       "tickColor": "#cccccc"
+    },
+    "legend": {
+      "labelFontSize": 11,
+      "titleFontSize": 12
     }
   }
 }

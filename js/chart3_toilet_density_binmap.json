@@ -3,151 +3,204 @@
   "description": "Bin map showing relative toilet supply, using state-level domestic travel demand as the denominator proxy.",
   "title": {
     "text": "Where is toilet supply relatively thin?",
-    "subtitle": "Grid colours now reflect relative toilet supply per million domestic trips, rather than raw toilet counts.",
+    "subtitle": "Darker cells indicate lower relative toilet supply per million domestic trips. Blank cells indicate no recorded toilets in the dataset or areas outside the grid coverage.",
     "anchor": "start",
     "fontSize": 20,
     "subtitleFontSize": 13
   },
   "width": 760,
   "height": 430,
-  "data": {
-    "url": "data_clean/toilet_clean.csv"
+  "projection": {
+    "type": "mercator"
   },
-  "transform": [
+  "layer": [
     {
-      "filter": "isValid(datum.Longitude) && isValid(datum.Latitude)"
-    },
-    {
-      "filter": "datum.Longitude >= 112 && datum.Longitude <= 154 && datum.Latitude >= -44 && datum.Latitude <= -10"
-    },
-    {
-      "lookup": "State",
-      "from": {
-        "data": {
-          "url": "data_clean/state_combined_summary.csv"
-        },
-        "key": "State",
-        "fields": ["Total_Domestic_Trips"]
+      "data": {
+        "url": "https://raw.githubusercontent.com/rowanhogan/australian-states/master/states.geojson",
+        "format": {
+          "type": "geojson"
+        }
+      },
+      "mark": {
+        "type": "geoshape",
+        "fill": "#f8f5f0",
+        "stroke": "#d9d2c8",
+        "strokeWidth": 0.8
       }
     },
     {
-      "filter": "isValid(datum.Total_Domestic_Trips)"
-    },
-    {
-      "calculate": "datum.Total_Domestic_Trips / 1000",
-      "as": "Demand_Million"
-    },
-    {
-      "bin": {
-        "step": 0.75
+      "data": {
+        "url": "data_clean/toilet_clean.csv"
       },
-      "field": "Longitude",
-      "as": ["lon_bin", "lon_bin_end"]
-    },
-    {
-      "bin": {
-        "step": 0.75
-      },
-      "field": "Latitude",
-      "as": ["lat_bin", "lat_bin_end"]
-    },
-    {
-      "aggregate": [
+      "transform": [
         {
-          "op": "count",
-          "field": "FacilityID",
-          "as": "Toilet_Count"
+          "filter": "isValid(datum.Longitude) && isValid(datum.Latitude)"
         },
         {
-          "op": "mean",
-          "field": "Demand_Million",
+          "filter": "datum.Longitude >= 112 && datum.Longitude <= 154 && datum.Latitude >= -44 && datum.Latitude <= -10"
+        },
+        {
+          "lookup": "State",
+          "from": {
+            "data": {
+              "url": "data_clean/state_combined_summary.csv"
+            },
+            "key": "State",
+            "fields": ["Total_Domestic_Trips"]
+          }
+        },
+        {
+          "filter": "isValid(datum.Total_Domestic_Trips)"
+        },
+        {
+          "calculate": "datum.Total_Domestic_Trips / 1000",
           "as": "Demand_Million"
+        },
+        {
+          "bin": {
+            "step": 0.75
+          },
+          "field": "Longitude",
+          "as": ["lon_bin", "lon_bin_end"]
+        },
+        {
+          "bin": {
+            "step": 0.75
+          },
+          "field": "Latitude",
+          "as": ["lat_bin", "lat_bin_end"]
+        },
+        {
+          "aggregate": [
+            {
+              "op": "count",
+              "field": "FacilityID",
+              "as": "Toilet_Count"
+            },
+            {
+              "op": "mean",
+              "field": "Demand_Million",
+              "as": "Demand_Million"
+            }
+          ],
+          "groupby": ["lon_bin", "lon_bin_end", "lat_bin", "lat_bin_end"]
+        },
+        {
+          "calculate": "datum.Toilet_Count / datum.Demand_Million",
+          "as": "Relative_Supply"
+        },
+        {
+          "calculate": "format(datum.Relative_Supply, '.2f')",
+          "as": "Relative_Supply_Label"
         }
       ],
-      "groupby": ["lon_bin", "lon_bin_end", "lat_bin", "lat_bin_end"]
+      "mark": {
+        "type": "rect",
+        "stroke": "#faf7f2",
+        "strokeWidth": 0.35
+      },
+      "encoding": {
+        "longitude": {
+          "field": "lon_bin",
+          "type": "quantitative"
+        },
+        "longitude2": {
+          "field": "lon_bin_end"
+        },
+        "latitude": {
+          "field": "lat_bin",
+          "type": "quantitative"
+        },
+        "latitude2": {
+          "field": "lat_bin_end"
+        },
+        "color": {
+          "field": "Relative_Supply",
+          "type": "quantitative",
+          "title": "Toilets per 1M trips",
+          "scale": {
+            "scheme": "oranges",
+            "reverse": true
+          },
+          "legend": {
+            "orient": "right",
+            "gradientLength": 170
+          }
+        },
+        "tooltip": [
+          {
+            "field": "Toilet_Count",
+            "type": "quantitative",
+            "title": "Toilets in grid"
+          },
+          {
+            "field": "Demand_Million",
+            "type": "quantitative",
+            "title": "Travel demand proxy (M trips)",
+            "format": ".2f"
+          },
+          {
+            "field": "Relative_Supply_Label",
+            "type": "nominal",
+            "title": "Relative supply"
+          }
+        ]
+      }
     },
     {
-      "calculate": "datum.Toilet_Count / datum.Demand_Million",
-      "as": "Relative_Supply"
-    },
-    {
-      "calculate": "format(datum.Relative_Supply, '.2f')",
-      "as": "Relative_Supply_Label"
+      "data": {
+        "values": [
+          {
+            "Longitude": 132.8,
+            "Latitude": -24.3,
+            "Note": "Long inland corridors show\nthinner relative supply"
+          },
+          {
+            "Longitude": 149.0,
+            "Latitude": -24.8,
+            "Note": "Dense coastal areas still\nconcentrate the toilet network"
+          },
+          {
+            "Longitude": 116.5,
+            "Latitude": -39.7,
+            "Note": "Blank cells mean no recorded toilets\nin the dataset or outside grid coverage"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "color": "#5d5148",
+        "stroke": "white",
+        "strokeWidth": 4
+      },
+      "encoding": {
+        "longitude": {
+          "field": "Longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "Latitude",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "Note",
+          "type": "nominal"
+        }
+      }
     }
   ],
-  "mark": {
-    "type": "rect",
-    "stroke": "#faf7f2",
-    "strokeWidth": 0.4
-  },
-  "encoding": {
-    "x": {
-      "field": "lon_bin",
-      "type": "quantitative",
-      "bin": "binned",
-      "title": "Longitude",
-      "axis": {
-        "labelFontSize": 11,
-        "titleFontSize": 12,
-        "grid": false
-      }
-    },
-    "x2": {
-      "field": "lon_bin_end"
-    },
-    "y": {
-      "field": "lat_bin",
-      "type": "quantitative",
-      "bin": "binned",
-      "title": "Latitude",
-      "axis": {
-        "labelFontSize": 11,
-        "titleFontSize": 12,
-        "grid": false
-      }
-    },
-    "y2": {
-      "field": "lat_bin_end"
-    },
-    "color": {
-      "field": "Relative_Supply",
-      "type": "quantitative",
-      "title": "Relative supply (toilets per 1M trips, darker = lower)",
-      "scale": {
-        "scheme": "oranges",
-        "reverse": true
-      },
-      "legend": {
-        "orient": "right"
-      }
-    },
-    "tooltip": [
-      {
-        "field": "Toilet_Count",
-        "type": "quantitative",
-        "title": "Toilets in grid"
-      },
-      {
-        "field": "Demand_Million",
-        "type": "quantitative",
-        "title": "Travel demand proxy (M trips)",
-        "format": ".2f"
-      },
-      {
-        "field": "Relative_Supply_Label",
-        "type": "nominal",
-        "title": "Relative supply"
-      }
-    ]
-  },
   "config": {
     "view": {
       "stroke": null
     },
     "font": "Arial",
-    "axis": {
-      "domain": false,
-      "tickColor": "#cccccc"
+    "legend": {
+      "labelFontSize": 11,
+      "titleFontSize": 12
     }
   }
 }

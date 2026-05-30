@@ -1,9 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Interactive heatmap showing tourism pressure by state and quarter using domestic tourism metrics.",
+  "description": "Interactive heatmap showing tourism pressure by state and quarter, with peak-quarter highlighting.",
   "title": {
     "text": "Tourism pressure changes by state and season",
-    "subtitle": "Darker cells indicate stronger domestic travel demand in that quarter.",
+    "subtitle": "Use the dropdown to switch between trips, nights and expenditure. Darker cells indicate higher values, and outlined cells mark each state's peak quarter.",
     "anchor": "start",
     "fontSize": 20,
     "subtitleFontSize": 13
@@ -44,7 +44,7 @@
       "as": "Quarter_Label"
     },
     {
-      "calculate": "datum.Metric == 'Regional expenditure' ? datum.Value / 1000 : datum.Value / 1000",
+      "calculate": "datum.Value / 1000",
       "as": "Display_Number"
     },
     {
@@ -57,11 +57,20 @@
           "op": "sum",
           "field": "Value",
           "as": "State_Total"
+        },
+        {
+          "op": "max",
+          "field": "Value",
+          "as": "State_Peak_Value"
         }
       ],
       "groupby": [
         "State"
       ]
+    },
+    {
+      "calculate": "datum.Value == datum.State_Peak_Value ? 'Peak' : ''",
+      "as": "Peak_Label"
     }
   ],
   "layer": [
@@ -104,7 +113,7 @@
         "color": {
           "field": "Display_Number",
           "type": "quantitative",
-          "title": "Selected metric",
+          "title": "Value of selected metric",
           "scale": {
             "scheme": "oranges"
           },
@@ -137,8 +146,47 @@
             "field": "Unit",
             "type": "nominal",
             "title": "Original unit"
+          },
+          {
+            "field": "Peak_Label",
+            "type": "nominal",
+            "title": "Peak quarter"
           }
         ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.Peak_Label == 'Peak'"
+        }
+      ],
+      "mark": {
+        "type": "rect",
+        "cornerRadius": 3,
+        "fillOpacity": 0,
+        "stroke": "#4a3a2d",
+        "strokeWidth": 2.5
+      },
+      "encoding": {
+        "x": {
+          "field": "Quarter_Label",
+          "type": "ordinal",
+          "sort": [
+            "Mar",
+            "Jun",
+            "Sep",
+            "Dec"
+          ]
+        },
+        "y": {
+          "field": "State",
+          "type": "nominal",
+          "sort": {
+            "field": "State_Total",
+            "order": "descending"
+          }
+        }
       }
     },
     {
@@ -169,6 +217,47 @@
         },
         "text": {
           "field": "Display_Value",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.Peak_Label == 'Peak'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "dx": -26,
+        "dy": -11,
+        "fontSize": 9,
+        "fontWeight": "bold",
+        "color": "#4a3a2d"
+      },
+      "encoding": {
+        "x": {
+          "field": "Quarter_Label",
+          "type": "ordinal",
+          "sort": [
+            "Mar",
+            "Jun",
+            "Sep",
+            "Dec"
+          ]
+        },
+        "y": {
+          "field": "State",
+          "type": "nominal",
+          "sort": {
+            "field": "State_Total",
+            "order": "descending"
+          }
+        },
+        "text": {
+          "field": "Peak_Label",
           "type": "nominal"
         }
       }
