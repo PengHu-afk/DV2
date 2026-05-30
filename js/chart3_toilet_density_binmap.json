@@ -1,9 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "A bin map showing the spatial density of public toilets across Australia using longitude and latitude bins.",
+  "description": "Bin map showing relative toilet supply, using state-level domestic travel demand as the denominator proxy.",
   "title": {
-    "text": "Public toilets cluster around cities and travel corridors",
-    "subtitle": "Each grid cell counts how many public toilets fall within that longitude-latitude area.",
+    "text": "Where is toilet supply relatively thin?",
+    "subtitle": "Grid colours now reflect relative toilet supply per million domestic trips, rather than raw toilet counts.",
     "anchor": "start",
     "fontSize": 20,
     "subtitleFontSize": 13
@@ -19,6 +19,60 @@
     },
     {
       "filter": "datum.Longitude >= 112 && datum.Longitude <= 154 && datum.Latitude >= -44 && datum.Latitude <= -10"
+    },
+    {
+      "lookup": "State",
+      "from": {
+        "data": {
+          "url": "data_clean/state_combined_summary.csv"
+        },
+        "key": "State",
+        "fields": ["Total_Domestic_Trips"]
+      }
+    },
+    {
+      "filter": "isValid(datum.Total_Domestic_Trips)"
+    },
+    {
+      "calculate": "datum.Total_Domestic_Trips / 1000",
+      "as": "Demand_Million"
+    },
+    {
+      "bin": {
+        "step": 0.75
+      },
+      "field": "Longitude",
+      "as": ["lon_bin", "lon_bin_end"]
+    },
+    {
+      "bin": {
+        "step": 0.75
+      },
+      "field": "Latitude",
+      "as": ["lat_bin", "lat_bin_end"]
+    },
+    {
+      "aggregate": [
+        {
+          "op": "count",
+          "field": "FacilityID",
+          "as": "Toilet_Count"
+        },
+        {
+          "op": "mean",
+          "field": "Demand_Million",
+          "as": "Demand_Million"
+        }
+      ],
+      "groupby": ["lon_bin", "lon_bin_end", "lat_bin", "lat_bin_end"]
+    },
+    {
+      "calculate": "datum.Toilet_Count / datum.Demand_Million",
+      "as": "Relative_Supply"
+    },
+    {
+      "calculate": "format(datum.Relative_Supply, '.2f')",
+      "as": "Relative_Supply_Label"
     }
   ],
   "mark": {
@@ -28,11 +82,9 @@
   },
   "encoding": {
     "x": {
-      "field": "Longitude",
+      "field": "lon_bin",
       "type": "quantitative",
-      "bin": {
-        "step": 0.75
-      },
+      "bin": "binned",
       "title": "Longitude",
       "axis": {
         "labelFontSize": 11,
@@ -40,30 +92,30 @@
         "grid": false
       }
     },
+    "x2": {
+      "field": "lon_bin_end"
+    },
     "y": {
-      "field": "Latitude",
+      "field": "lat_bin",
       "type": "quantitative",
-      "bin": {
-        "step": 0.75
-      },
+      "bin": "binned",
       "title": "Latitude",
-      "scale": {
-        "reverse": false
-      },
       "axis": {
         "labelFontSize": 11,
         "titleFontSize": 12,
         "grid": false
       }
     },
+    "y2": {
+      "field": "lat_bin_end"
+    },
     "color": {
-      "aggregate": "count",
-      "field": "FacilityID",
+      "field": "Relative_Supply",
       "type": "quantitative",
-      "title": "Toilets per grid cell",
+      "title": "Relative supply (toilets per 1M trips, darker = lower)",
       "scale": {
         "scheme": "oranges",
-        "type": "sqrt"
+        "reverse": true
       },
       "legend": {
         "orient": "right"
@@ -71,26 +123,20 @@
     },
     "tooltip": [
       {
-        "aggregate": "count",
-        "field": "FacilityID",
+        "field": "Toilet_Count",
         "type": "quantitative",
-        "title": "Toilets in cell"
+        "title": "Toilets in grid"
       },
       {
-        "field": "Longitude",
+        "field": "Demand_Million",
         "type": "quantitative",
-        "bin": {
-          "step": 0.75
-        },
-        "title": "Longitude bin"
+        "title": "Travel demand proxy (M trips)",
+        "format": ".2f"
       },
       {
-        "field": "Latitude",
-        "type": "quantitative",
-        "bin": {
-          "step": 0.75
-        },
-        "title": "Latitude bin"
+        "field": "Relative_Supply_Label",
+        "type": "nominal",
+        "title": "Relative supply"
       }
     ]
   },

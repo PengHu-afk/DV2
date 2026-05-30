@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Bubble quadrant chart comparing domestic travel demand with public toilet supply by Australian state.",
+  "description": "Quadrant chart comparing domestic travel demand with public toilet supply by Australian state.",
   "title": {
     "text": "Where does tourism demand outpace toilet supply?",
     "subtitle": "States in the upper-left area have higher travel demand but fewer public toilets.",
@@ -92,6 +92,7 @@
     {
       "mark": {
         "type": "circle",
+        "size": 220,
         "opacity": 0.82,
         "stroke": "white",
         "strokeWidth": 1.4
@@ -115,17 +116,6 @@
             "grid": true,
             "labelFontSize": 11,
             "titleFontSize": 12
-          }
-        },
-        "size": {
-          "field": "Readiness_Percent",
-          "type": "quantitative",
-          "title": "Road-trip readiness score",
-          "scale": {
-            "range": [120, 900]
-          },
-          "legend": {
-            "orient": "right"
           }
         },
         "color": {

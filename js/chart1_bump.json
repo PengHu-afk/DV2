@@ -1,9 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Bump chart showing how Australian states rank by total domestic trips across 2025 quarters.",
+  "description": "Line chart showing actual domestic travel demand by state across 2025 quarters.",
   "title": {
-    "text": "Which states dominate domestic travel demand across 2025?",
-    "subtitle": "Ranking of total domestic trips by state across quarters; rank 1 means the highest demand.",
+    "text": "Domestic travel demand by state across 2025",
+    "subtitle": "The y-axis now shows actual travel volume rather than rank, making seasonal variation easier to see.",
     "anchor": "start",
     "fontSize": 20,
     "subtitleFontSize": 13
@@ -15,14 +15,14 @@
   },
   "transform": [
     {
-      "filter": "isValid(datum.Demand_Rank)"
+      "filter": "isValid(datum.Trips_Million)"
     },
     {
       "calculate": "datum.Quarter_Order == 1 ? 'Mar' : datum.Quarter_Order == 2 ? 'Jun' : datum.Quarter_Order == 3 ? 'Sep' : datum.Quarter_Order == 4 ? 'Dec' : datum.Quarter",
       "as": "Quarter_Label"
     },
     {
-      "calculate": "format(datum.Trips_Million, '.1f') + 'M trips'",
+      "calculate": "format(datum.Trips_Million, '.1f') + 'M'",
       "as": "Trips_Label"
     }
   ],
@@ -32,36 +32,32 @@
         "type": "line",
         "interpolate": "monotone",
         "strokeWidth": 3,
-        "opacity": 0.8
+        "opacity": 0.85
       },
       "encoding": {
         "x": {
           "field": "Quarter_Label",
           "type": "ordinal",
-          "sort": {
-            "field": "Quarter_Order",
-            "order": "ascending"
-          },
+          "sort": ["Mar", "Jun", "Sep", "Dec"],
           "title": "2025 quarter",
           "axis": {
+            "labelAngle": 0,
             "labelFontSize": 12,
-            "titleFontSize": 12,
-            "labelAngle": 0
+            "titleFontSize": 12
           }
         },
         "y": {
-          "field": "Demand_Rank",
+          "field": "Trips_Million",
           "type": "quantitative",
-          "title": "Demand rank",
+          "title": "Domestic travel demand (million trips)",
           "scale": {
-            "domain": [1, 8],
-            "reverse": true
+            "nice": true,
+            "zero": false
           },
           "axis": {
-            "tickMinStep": 1,
-            "values": [1, 2, 3, 4, 5, 6, 7, 8],
             "labelFontSize": 12,
-            "titleFontSize": 12
+            "titleFontSize": 12,
+            "grid": true
           }
         },
         "color": {
@@ -85,11 +81,6 @@
             "title": "Quarter"
           },
           {
-            "field": "Demand_Rank",
-            "type": "quantitative",
-            "title": "Demand rank"
-          },
-          {
             "field": "Trips_Million",
             "type": "quantitative",
             "title": "Domestic trips (M)",
@@ -100,7 +91,8 @@
     },
     {
       "mark": {
-        "type": "circle",
+        "type": "point",
+        "filled": true,
         "size": 95,
         "stroke": "white",
         "strokeWidth": 1.2
@@ -109,18 +101,11 @@
         "x": {
           "field": "Quarter_Label",
           "type": "ordinal",
-          "sort": {
-            "field": "Quarter_Order",
-            "order": "ascending"
-          }
+          "sort": ["Mar", "Jun", "Sep", "Dec"]
         },
         "y": {
-          "field": "Demand_Rank",
-          "type": "quantitative",
-          "scale": {
-            "domain": [1, 8],
-            "reverse": true
-          }
+          "field": "Trips_Million",
+          "type": "quantitative"
         },
         "color": {
           "field": "State",
@@ -137,11 +122,6 @@
             "field": "Quarter",
             "type": "nominal",
             "title": "Quarter"
-          },
-          {
-            "field": "Demand_Rank",
-            "type": "quantitative",
-            "title": "Demand rank"
           },
           {
             "field": "Trips_Label",
@@ -161,26 +141,19 @@
         "type": "text",
         "align": "left",
         "baseline": "middle",
-        "dx": 10,
-        "fontSize": 11,
+        "dx": 8,
+        "fontSize": 10,
         "fontWeight": "bold"
       },
       "encoding": {
         "x": {
           "field": "Quarter_Label",
           "type": "ordinal",
-          "sort": {
-            "field": "Quarter_Order",
-            "order": "ascending"
-          }
+          "sort": ["Mar", "Jun", "Sep", "Dec"]
         },
         "y": {
-          "field": "Demand_Rank",
-          "type": "quantitative",
-          "scale": {
-            "domain": [1, 8],
-            "reverse": true
-          }
+          "field": "Trips_Million",
+          "type": "quantitative"
         },
         "text": {
           "field": "State",
@@ -201,7 +174,6 @@
     "font": "Arial",
     "axis": {
       "domain": false,
-      "grid": true,
       "tickColor": "#cccccc"
     }
   }

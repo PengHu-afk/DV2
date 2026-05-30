@@ -1,9 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Small multiple maps showing public toilets that support different road-trip traveller needs.",
+  "description": "Small multiple maps showing public toilets that support different road-trip traveller needs, with direct annotations in each panel.",
   "title": {
     "text": "Different road-trip needs create different toilet maps",
-    "subtitle": "Each panel shows toilets that support one specific traveller need.",
+    "subtitle": "Each panel now includes a short direct annotation to guide interpretation.",
     "anchor": "start",
     "fontSize": 20,
     "subtitleFontSize": 13
@@ -42,67 +42,120 @@
     "projection": {
       "type": "mercator"
     },
-    "mark": {
-      "type": "circle",
-      "size": 9,
-      "opacity": 0.35
-    },
-    "encoding": {
-      "longitude": {
-        "field": "Longitude",
-        "type": "quantitative"
-      },
-      "latitude": {
-        "field": "Latitude",
-        "type": "quantitative"
-      },
-      "color": {
-        "field": "Traveller_Need",
-        "type": "nominal",
-        "legend": null,
-        "scale": {
-          "domain": [
-            "24-hour access",
-            "Accessible access",
-            "Family support",
-            "Caravan support"
-          ],
-          "range": [
-            "#6b4f3f",
-            "#4f6f7f",
-            "#b77945",
-            "#5f7f58"
+    "layer": [
+      {
+        "mark": {
+          "type": "circle",
+          "size": 9,
+          "opacity": 0.35
+        },
+        "encoding": {
+          "longitude": {
+            "field": "Longitude",
+            "type": "quantitative"
+          },
+          "latitude": {
+            "field": "Latitude",
+            "type": "quantitative"
+          },
+          "color": {
+            "field": "Traveller_Need",
+            "type": "nominal",
+            "legend": null,
+            "scale": {
+              "domain": [
+                "24-hour access",
+                "Accessible access",
+                "Family support",
+                "Caravan support"
+              ],
+              "range": [
+                "#6b4f3f",
+                "#4f6f7f",
+                "#b77945",
+                "#5f7f58"
+              ]
+            }
+          },
+          "tooltip": [
+            {
+              "field": "Name",
+              "type": "nominal",
+              "title": "Toilet name"
+            },
+            {
+              "field": "Town",
+              "type": "nominal",
+              "title": "Town"
+            },
+            {
+              "field": "State",
+              "type": "nominal",
+              "title": "State"
+            },
+            {
+              "field": "FacilityType",
+              "type": "nominal",
+              "title": "Facility type"
+            },
+            {
+              "field": "Traveller_Need",
+              "type": "nominal",
+              "title": "Traveller need"
+            }
           ]
         }
       },
-      "tooltip": [
-        {
-          "field": "Name",
-          "type": "nominal",
-          "title": "Toilet name"
+      {
+        "transform": [
+          {
+            "aggregate": [
+              {
+                "op": "count",
+                "as": "n"
+              }
+            ],
+            "groupby": ["Traveller_Need"]
+          },
+          {
+            "calculate": "datum.Traveller_Need == '24-hour access' ? 'Night access clusters\\non major travel routes' : datum.Traveller_Need == 'Accessible access' ? 'Remote areas remain\\nvisibly sparse' : datum.Traveller_Need == 'Family support' ? 'Family-friendly stops\\ncluster near larger towns' : 'Caravan facilities are\\nmost fragmented'",
+            "as": "Panel_Note"
+          },
+          {
+            "calculate": "113.2",
+            "as": "Note_Longitude"
+          },
+          {
+            "calculate": "-41.8",
+            "as": "Note_Latitude"
+          }
+        ],
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "baseline": "top",
+          "fontSize": 12,
+          "fontWeight": "bold",
+          "color": "#2b2118",
+          "stroke": "white",
+          "strokeWidth": 4
         },
-        {
-          "field": "Town",
-          "type": "nominal",
-          "title": "Town"
-        },
-        {
-          "field": "State",
-          "type": "nominal",
-          "title": "State"
-        },
-        {
-          "field": "FacilityType",
-          "type": "nominal",
-          "title": "Facility type"
-        },
-        {
-          "field": "Traveller_Need",
-          "type": "nominal",
-          "title": "Traveller need"
+        "encoding": {
+          "longitude": {
+            "field": "Note_Longitude",
+            "type": "quantitative"
+          },
+          "latitude": {
+            "field": "Note_Latitude",
+            "type": "quantitative"
+          },
+          "text": {
+            "field": "Panel_Note",
+            "type": "nominal"
+          }
         }
-      ]
-    }
+      }
+    ]
   },
   "resolve": {
     "scale": {
